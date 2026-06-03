@@ -1,0 +1,20 @@
+{
+  "name": "Estudio Bíblico Familiar",
+  "short_name": "Biblia App",
+  "description": "Tu compañero de estudio bíblico personal — Iglesia Hosanna Sur",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f1a12",
+  "theme_color": "#1a3a22",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "lifestyle"],
+  "lang": "es"
+}
