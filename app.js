@@ -75,9 +75,42 @@ const LIBROS = [
   { n:"Apocalipsis",    cap:22 },
 ];
 
+// Remove accents and prepare book name for API
+function getApiBookName(bookName) {
+  let name = bookName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  name = name.replace(/\s+/g, "-");
+  return name.toLowerCase();
+}
+
+// Fetch real Bible chapter text from online API, fallback to mock if offline
+async function fetchCapituloTexto(libroName, cap, versionVal) {
+  let apiVersion = 'rv1960';
+  if (versionVal === 'nvi') {
+    apiVersion = 'nvi';
+  }
+  
+  const apiBook = getApiBookName(libroName);
+  const url = `https://bible-api.deno.dev/api/read/${apiVersion}/${apiBook}/${cap}`;
+  
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('API response error');
+    const data = await res.json();
+    if (data && data.vers && Array.isArray(data.vers)) {
+      return data.vers.map(v => ({
+        num: v.number,
+        text: v.verse
+      }));
+    }
+  } catch (err) {
+    console.warn('Fallback to mock verses due to:', err);
+  }
+  
+  return getCapituloTextoMock(libroName, cap);
+}
+
 // Versículos representativos por capítulo (generados para demostración offline)
-// En producción se puede ampliar con una Biblia completa en JSON
-function getCapituloTexto(libro, cap) {
+function getCapituloTextoMock(libro, cap) {
   const seed = (libro.length * 7 + cap * 13) % VERSES.length;
   const count = 5 + (seed % 8); // entre 5 y 12 versículos
   const versos = [];
@@ -450,15 +483,29 @@ function onLibroChange() {
   loadCapitulo();
 }
 
-function loadCapitulo() {
+async function loadCapitulo() {
   const selCap = $('sel-capitulo');
   if (!selCap) return;
   lectorCapIdx = parseInt(selCap.value) || 1;
   if (lectorLibroIdx < 0) return;
   const libro = LIBROS[lectorLibroIdx];
-  const versos = getCapituloTexto(libro.n, lectorCapIdx);
   const display = $('verse-display');
   if (!display) return;
+  
+  // Show loading indicator
+  display.innerHTML = `
+    <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:14px; letter-spacing:.06em; text-transform:uppercase;">
+      ${libro.n} — Capítulo ${lectorCapIdx}
+    </div>
+    <div class="empty-state">
+      <div class="empty-state-icon">⏳</div>
+      <p>Cargando escrituras...</p>
+    </div>
+  `;
+
+  const versionVal = ($('sel-version') || { value: 'rva' }).value;
+  const versos = await fetchCapituloTexto(libro.n, lectorCapIdx, versionVal);
+  
   display.innerHTML = `
     <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:14px; letter-spacing:.06em; text-transform:uppercase;">
       ${libro.n} — Capítulo ${lectorCapIdx}
@@ -908,7 +955,7 @@ function vmOnLibroChange() {
   vmLoadVerses();
 }
 
-function vmLoadVerses() {
+async function vmLoadVerses() {
   const selCap = $('vm-cap');
   if (!selCap) return;
   
@@ -921,8 +968,19 @@ function vmLoadVerses() {
     return;
   }
   
+  const list = $('vm-list');
+  if (list) {
+    list.innerHTML = `
+      <div class="empty-state" style="padding:30px 20px;">
+        <div class="empty-state-icon">⏳</div>
+        <p>Cargando versículos...</p>
+      </div>
+    `;
+  }
+  
   const libroName = LIBROS[vmSelectedBookIdx].n;
-  vmCurrentVerses = getCapituloTexto(libroName, vmSelectedCap);
+  const versionVal = ($('sel-version') || { value: 'rva' }).value;
+  vmCurrentVerses = await fetchCapituloTexto(libroName, vmSelectedCap, versionVal);
   
   const rangeBar = $('vm-range-bar');
   if (rangeBar) rangeBar.style.display = 'flex';
