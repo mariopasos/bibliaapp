@@ -292,9 +292,13 @@ body::before {
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(201,169,110,0.3);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.btn-verse:hover { background: rgba(201,169,110,0.25); transform: translateY(-1px); }
+.btn-verse:hover, .btn-verse:active { background: rgba(201,169,110,0.25); transform: translateY(-1px); }
 
 /* ── SECTION HEADER ── */
 .section-header {

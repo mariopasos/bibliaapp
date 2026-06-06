@@ -1,4 +1,4 @@
-const CACHE_NAME = 'biblia-app-v4';
+const CACHE_NAME = 'biblia-app-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -25,8 +25,23 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
+// Network-first strategy: try network, fall back to cache
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('./index.html')))
+    fetch(e.request)
+      .then(response => {
+        // If we got a good response, clone it and update the cache
+        if (response && response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(e.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        // Network failed, try cache
+        return caches.match(e.request).then(cached => cached || caches.match('./index.html'));
+      })
   );
 });

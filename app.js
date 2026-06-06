@@ -178,17 +178,56 @@ function showVerse(idx) {
 function bindVerseButtons() {
   const btnCopy = $('btn-copy-verse');
   const btnNew  = $('btn-new-verse');
-  if (btnCopy) btnCopy.onclick = () => {
+  let touchHandled = false;
+
+  function handleCopy(e) {
+    if (e.type === 'touchend') {
+      e.preventDefault();
+      touchHandled = true;
+      setTimeout(() => { touchHandled = false; }, 400);
+    } else if (touchHandled) {
+      return; // skip click after touchend
+    }
     const v = VERSES[currentVerseIdx];
-    navigator.clipboard.writeText('\u201C' + v.text + '\u201D — ' + v.ref)
-      .then(() => toast('📋 Versículo copiado'))
-      .catch(() => toast('⚠️ No se pudo copiar'));
-  };
-  if (btnNew) btnNew.onclick = () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('\u201C' + v.text + '\u201D — ' + v.ref)
+        .then(() => toast('📋 Versículo copiado'))
+        .catch(() => toast('⚠️ No se pudo copiar'));
+    } else {
+      // Fallback for mobile browsers without clipboard API
+      const ta = document.createElement('textarea');
+      ta.value = '\u201C' + v.text + '\u201D — ' + v.ref;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); toast('📋 Versículo copiado'); }
+      catch { toast('⚠️ No se pudo copiar'); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  function handleNewVerse(e) {
+    if (e.type === 'touchend') {
+      e.preventDefault();
+      touchHandled = true;
+      setTimeout(() => { touchHandled = false; }, 400);
+    } else if (touchHandled) {
+      return; // skip click after touchend
+    }
     currentVerseIdx = (currentVerseIdx + 1) % VERSES.length;
     showVerse(currentVerseIdx);
     toast('✨ Nuevo versículo');
-  };
+  }
+
+  if (btnCopy) {
+    btnCopy.addEventListener('click', handleCopy);
+    btnCopy.addEventListener('touchend', handleCopy);
+  }
+  if (btnNew) {
+    btnNew.addEventListener('click', handleNewVerse);
+    btnNew.addEventListener('touchend', handleNewVerse);
+  }
 }
 
 // ── ESTADÍSTICAS ──────────────────────────────────────────
@@ -1136,7 +1175,7 @@ function insertTextAtCursor(el, text) {
 }
 
 // ── INIT ──────────────────────────────────────────────────
-(function init() {
+function startApp() {
   try {
     bosquejos   = load(KEY_BOSQUEJOS, []);
     reflexiones = load(KEY_REFLEXIONES, []);
@@ -1150,7 +1189,18 @@ function insertTextAtCursor(el, text) {
     window.addEventListener('online',  updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
     registerSW();
+    console.log('✅ Biblia App iniciada correctamente');
   } catch(e) {
-    console.error('Error en init:', e);
+    console.error('❌ Error en init:', e);
+    // Show error visually on mobile for debugging
+    const vt = document.getElementById('verse-text');
+    if (vt) vt.textContent = 'Error al iniciar: ' + e.message;
   }
-})();
+}
+
+// Ensure DOM is fully loaded before initializing
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
