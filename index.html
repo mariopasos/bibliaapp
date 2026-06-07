@@ -1,382 +1,773 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es" class="light">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <meta name="description" content="Estudio Bíblico Familiar — Iglesia Hosanna Sur. Tu compañero de fe: bosquejos de sermones, reflexiones personales, lector bíblico y sonido Zen. Funciona sin internet."/>
-  <meta name="theme-color" content="#1a3a22"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="Biblia App"/>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+  <meta name="description" content="Estudio Bíblico Familiar — Iglesia Hosanna Sur. Tu compañero de fe: bosquejos de sermones, reflexiones personales, lector bíblico y sonido Zen. Funciona sin internet.">
+  <meta name="theme-color" content="#094cb2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Biblia App">
   <title>Estudio Bíblico Familiar — Iglesia Hosanna Sur</title>
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="icon" type="image/svg+xml" href="icon.svg"/>
-  <link rel="apple-touch-icon" href="icon.svg"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Inter:wght@400;500;600&amp;family=Public+Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#f5f3f4",
+            "on-tertiary-container": "#4a3f00",
+            "on-primary-fixed": "#001946",
+            "on-primary": "#ffffff",
+            "outline": "#737784",
+            "inverse-primary": "#b1c5ff",
+            "surface-container": "#efedee",
+            "on-error": "#ffffff",
+            "surface-tint": "#2259bf",
+            "on-secondary-fixed": "#171c20",
+            "outline-variant": "#c3c6d5",
+            "on-tertiary-fixed": "#211b00",
+            "primary-fixed-dim": "#b1c5ff",
+            "surface-dim": "#dbdadb",
+            "secondary-container": "#dfe3e8",
+            "error": "#ba1a1a",
+            "tertiary-fixed": "#f9e37a",
+            "on-secondary-container": "#606569",
+            "background": "#faf9fa",
+            "on-secondary": "#ffffff",
+            "on-background": "#1b1c1d",
+            "tertiary-container": "#bfab49",
+            "on-secondary-fixed-variant": "#42474b",
+            "on-surface": "#1b1c1d",
+            "surface-container-lowest": "#ffffff",
+            "surface": "#faf9fa",
+            "tertiary": "#6d5e00",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#dfe3e8",
+            "surface-container-high": "#e9e8e9",
+            "tertiary-fixed-dim": "#dcc661",
+            "inverse-surface": "#303031",
+            "error-container": "#ffdad6",
+            "surface-variant": "#e3e2e3",
+            "secondary": "#5a5f63",
+            "inverse-on-surface": "#f2f0f1",
+            "on-error-container": "#93000a",
+            "surface-container-highest": "#e3e2e3",
+            "surface-bright": "#faf9fa",
+            "secondary-fixed-dim": "#c2c7cc",
+            "primary-container": "#3366cc",
+            "primary-fixed": "#d9e2ff",
+            "primary": "#094cb2",
+            "on-primary-container": "#e7ebff",
+            "on-tertiary-fixed-variant": "#524600",
+            "on-primary-fixed-variant": "#00419d",
+            "on-surface-variant": "#434653"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "fontFamily": {
+            "headline": ["Noto Serif"],
+            "display": ["Noto Serif"],
+            "body": ["Inter"],
+            "label": ["Public Sans"]
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body { font-family: 'Inter', sans-serif; min-height: 100vh; min-height: 100dvh; }
+    .font-headline { font-family: 'Noto Serif', serif; }
+    .font-label { font-family: 'Public Sans', sans-serif; }
+    .glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background-color: rgba(255, 255, 255, 0.8); }
+    .dark .glass { background-color: rgba(27, 28, 29, 0.8); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .gradient-primary { background: linear-gradient(135deg, #094cb2, #3366cc); }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    
+    /* Custom themes for reader */
+    .sepia-mode { background-color: #f4ecd8 !important; color: #433422 !important; }
+    .sepia-mode .surface-container-lowest { background-color: #fcf5e5 !important; }
+    .sepia-mode .text-on-surface-variant { color: #5f4b32 !important; }
+    .sepia-mode header, .sepia-mode nav { background-color: #f4ecd8/80 !important; }
+    
+    .dark-mode { background-color: #1b1c1d !important; color: #e3e2e3 !important; }
+    
+    /* Font slider custom styles */
+    #font-slider::-webkit-slider-runnable-track { background: #dfe3e8; height: 4px; border-radius: 2px; }
+    #font-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%;
+      background: #094cb2; margin-top: -7px; cursor: pointer;
+    }
+    .toast {
+      position: fixed;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(27, 28, 29, 0.95);
+      border: 1px solid rgba(9, 76, 178, 0.3);
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffffff;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
 </head>
-<body>
+<body class="bg-background text-on-surface selection:bg-primary-fixed/50 selection:text-on-primary-fixed min-h-screen pb-24 transition-colors duration-300">
 
-<div class="app-shell">
-
-  <!-- ══ HEADER ══ -->
-  <header class="app-header">
-    <div class="header-brand">
-      <div class="header-icon" style="background:#fff; padding:3px; display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="logo-hosanna.png" alt="Hosanna Sur" style="width:100%; height:100%; object-fit:contain; border-radius:9px;"/></div>
-      <div>
-        <div class="header-title">Estudio Bíblico Familiar</div>
-        <div class="header-subtitle" id="online-status">● Iglesia Hosanna Sur</div>
-      </div>
+  <!-- ══ HEADER GLOBAL ══ -->
+  <header class="w-full top-0 sticky z-50 bg-surface-container-lowest/90 backdrop-blur-xl flex justify-between items-center px-6 py-4 border-b border-outline-variant/10">
+    <div class="flex items-center gap-4">
+      <button onclick="toggleMenuDrawer()" class="cursor-pointer active:opacity-70 transition-opacity flex items-center" title="Menú">
+        <span class="material-symbols-outlined text-primary text-2xl">menu</span>
+      </button>
+      <h1 class="font-headline text-2xl font-bold text-primary tracking-tighter">Hosanna Sur</h1>
     </div>
-    <div class="header-actions">
-      <button class="btn-icon" id="btn-theme" title="Cambiar tema">🌙</button>
+    
+    <div class="flex items-center gap-4">
+      <div id="online-status" class="font-label text-[10px] uppercase tracking-widest text-primary font-semibold hidden md:block">● Iglesia Hosanna Sur</div>
+      <button id="btn-theme" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors" title="Cambiar tema">
+        <span class="material-symbols-outlined text-primary text-xl">dark_mode</span>
+      </button>
+      <button id="header-settings-btn" class="hidden cursor-pointer active:opacity-70 transition-opacity flex items-center" onclick="toggleSettings()" title="Ajustes de lectura">
+        <span class="material-symbols-outlined text-primary text-xl">settings</span>
+      </button>
+      <div class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant/30">
+        <img src="logo-hosanna.png" alt="Hosanna Sur" class="w-full h-full object-contain p-0.5 bg-white">
+      </div>
     </div>
   </header>
 
-  <!-- ══ MAIN ══ -->
-  <main class="app-main">
+  <!-- ══ MAIN CONTAINER ══ -->
+  <main class="max-w-3xl mx-auto px-6 pt-8 space-y-10">
 
-    <!-- ── TAB: INICIO (Versículo + Zen) ── -->
-    <section class="tab-screen active" id="tab-inicio">
+    <!-- ── TAB: INICIO ── -->
+    <section id="tab-inicio" class="tab-screen block space-y-10">
+      <!-- Saludo Dinámico -->
+      <header>
+        <h2 id="greeting-text" class="font-headline text-4xl font-bold text-on-surface tracking-tight">Buenas tardes, Comunidad Hosanna Sur</h2>
+        <p id="date-text" class="font-label text-on-surface-variant mt-1 text-sm tracking-widest uppercase">Jueves, 24 de Octubre</p>
+      </header>
 
       <!-- Versículo del Día -->
-      <div class="verse-card">
-        <div class="verse-card-label">📖 Versículo del Día</div>
-        <div class="verse-card-text" id="verse-text">Cargando...</div>
-        <div class="verse-card-ref" id="verse-ref"></div>
-        <div class="verse-card-actions">
-          <button class="btn-verse" id="btn-copy-verse">📋 Copiar</button>
-          <button class="btn-verse" id="btn-new-verse">🔄 Otro versículo</button>
+      <article class="relative overflow-hidden rounded-xl bg-surface-container-low p-8 md:p-12 shadow-sm border border-outline-variant/10">
+        <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+          <span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">format_quote</span>
         </div>
-      </div>
+        <div class="relative z-10">
+          <span class="font-label text-tertiary font-semibold tracking-wider text-xs uppercase mb-4 block">📖 Versículo del día</span>
+          <blockquote id="verse-text" class="font-headline text-2xl md:text-3xl italic leading-relaxed text-on-surface mb-6">
+            "Cargando versículo..."
+          </blockquote>
+          <cite id="verse-ref" class="font-label text-on-surface-variant not-italic font-bold tracking-widest">— CARGANDO...</cite>
+          
+          <div class="flex gap-4 mt-8">
+            <button id="btn-copy-verse" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-outline-variant/30 bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95">
+              <span class="material-symbols-outlined text-sm">content_copy</span>
+              <span class="font-label text-xs font-bold uppercase tracking-widest">Copiar</span>
+            </button>
+            <button id="btn-new-verse" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-outline-variant/30 bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95">
+              <span class="material-symbols-outlined text-sm">refresh</span>
+              <span class="font-label text-xs font-bold uppercase tracking-widest">Cambiar</span>
+            </button>
+          </div>
+        </div>
+      </article>
 
       <!-- Player Zen de Enfoque -->
-      <div class="zen-bar" id="zen-bar">
-        <span style="font-size:18px;">🎧</span>
-        <div>
-          <div class="zen-name" id="zen-name">Silencio</div>
-          <div style="font-size:10px; color:var(--text-muted);">Sonido de enfoque</div>
+      <div class="glass flex items-center justify-between p-4 rounded-xl border border-outline-variant/20 shadow-sm" id="zen-bar">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-2xl">headphones</span>
+          <div>
+            <div class="font-headline text-sm font-semibold text-on-surface" id="zen-name">Silencio</div>
+            <div class="font-label text-[10px] uppercase tracking-wider text-on-surface-variant">Sonido de enfoque</div>
+          </div>
         </div>
-        <button class="zen-btn-small" id="btn-zen-select" title="Elegir sonido">🎵</button>
-        <button class="zen-btn-small" id="btn-zen-play" title="Reproducir/Pausa">
-          <svg id="zen-play-svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-
-      <!-- Accesos rápidos -->
-      <div class="section-header">
-        <div class="section-title">📌 Accesos Rápidos</div>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
-        <button class="glass-card" style="padding:20px 16px; text-align:center; cursor:pointer; border:none; color:var(--text-primary);" onclick="switchTab('tab-bosquejos'); showEditorBosquejo()">
-          <div style="font-size:28px; margin-bottom:6px;">📝</div>
-          <div style="font-size:13px; font-weight:700;">Nuevo Bosquejo</div>
-          <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Sermón o estudio</div>
-        </button>
-        <button class="glass-card" style="padding:20px 16px; text-align:center; cursor:pointer; border:none; color:var(--text-primary);" onclick="switchTab('tab-reflexiones'); showEditorReflexion()">
-          <div style="font-size:28px; margin-bottom:6px;">🙏</div>
-          <div style="font-size:13px; font-weight:700;">Nueva Reflexión</div>
-          <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Devocional personal</div>
-        </button>
-      </div>
-
-      <!-- Stats -->
-      <div class="section-header">
-        <div class="section-title">📊 Mi Progreso</div>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
-        <div class="glass-card" style="padding:16px; text-align:center;">
-          <div style="font-size:26px; font-weight:800; color:var(--emerald-light);" id="stat-bosquejos">0</div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:2px; text-transform:uppercase; letter-spacing:.05em;">Bosquejos</div>
-        </div>
-        <div class="glass-card" style="padding:16px; text-align:center;">
-          <div style="font-size:26px; font-weight:800; color:var(--gold-light);" id="stat-reflexiones">0</div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:2px; text-transform:uppercase; letter-spacing:.05em;">Reflexiones</div>
-        </div>
-        <div class="glass-card" style="padding:16px; text-align:center;">
-          <div style="font-size:26px; font-weight:800; color:var(--accent-blue);" id="stat-streak">0</div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:2px; text-transform:uppercase; letter-spacing:.05em;">Días seguidos</div>
+        <div class="flex gap-2">
+          <button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors" id="btn-zen-select" title="Elegir sonido">
+            <span class="material-symbols-outlined text-sm text-primary">music_note</span>
+          </button>
+          <button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:scale-105 transition-transform" id="btn-zen-play" title="Reproducir/Pausa">
+            <svg id="zen-play-svg" viewBox="0 0 24 24" class="w-5 h-5 fill-current"><path d="M8 5v14l11-7z"/></svg>
+          </button>
         </div>
       </div>
 
+      <!-- Accesos Rápidos -->
+      <section class="space-y-4">
+        <h3 class="font-headline text-2xl font-bold text-on-surface">📌 Accesos Rápidos</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <button onclick="switchTab('tab-bosquejos'); showEditorBosquejo();" class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-6 text-center hover:bg-surface-container transition-all active:scale-98">
+            <div class="text-3xl mb-3">📝</div>
+            <div class="font-headline text-sm font-bold text-on-surface">Nuevo Bosquejo</div>
+            <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">Sermón o estudio</div>
+          </button>
+          <button onclick="switchTab('tab-reflexiones'); showEditorReflexion();" class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-6 text-center hover:bg-surface-container transition-all active:scale-98">
+            <div class="text-3xl mb-3">🙏</div>
+            <div class="font-headline text-sm font-bold text-on-surface">Nueva Reflexión</div>
+            <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">Devocional personal</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Progreso & Estadísticas -->
+      <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/10 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="material-symbols-outlined text-tertiary">auto_stories</span>
+              <h3 class="font-headline text-xl font-bold">Plan de Lectura Familiar</h3>
+            </div>
+            <div class="w-full bg-surface-container rounded-full h-1.5 mb-2">
+              <div class="bg-primary h-1.5 rounded-full" style="width: 42%"></div>
+            </div>
+            <p class="font-label text-xs text-on-surface-variant tracking-wide">Has completado el 42% de tu plan anual</p>
+          </div>
+          <button onclick="switchTab('tab-lector')" class="gradient-primary text-on-primary px-8 py-3 rounded-full font-label text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-transform active:scale-95">
+            Continuar Lectura
+          </button>
+        </div>
+
+        <hr class="border-outline-variant/10">
+
+        <!-- Contadores -->
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div class="bg-surface-container-low p-4 rounded-xl">
+            <div id="stat-bosquejos" class="font-headline text-3xl font-extrabold text-primary">0</div>
+            <div class="font-label text-[9px] uppercase tracking-wider text-on-surface-variant mt-1">Bosquejos</div>
+          </div>
+          <div class="bg-surface-container-low p-4 rounded-xl">
+            <div id="stat-reflexiones" class="font-headline text-3xl font-extrabold text-tertiary">0</div>
+            <div class="font-label text-[9px] uppercase tracking-wider text-on-surface-variant mt-1">Reflexiones</div>
+          </div>
+          <div class="bg-surface-container-low p-4 rounded-xl">
+            <div id="stat-streak" class="font-headline text-3xl font-extrabold text-emerald-600">0</div>
+            <div class="font-label text-[9px] uppercase tracking-wider text-on-surface-variant mt-1">Días Seguidos</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Biblioteca Bento Grid -->
+      <section class="space-y-4">
+        <h3 class="font-headline text-2xl font-bold text-on-surface">Biblioteca</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div onclick="switchTab('tab-lector'); setLectorToBook(0)" class="group relative overflow-hidden h-36 rounded-xl cursor-pointer">
+            <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCRGWZna3b3O5GcVzUCiRlCDHC6fdfVHDPsesfY0FetBBB1VJtBt6NCHDqYBYWq5HAzC2Oe4R04M7pJ-p2vgy8p0s66Hg-k_K68xoWuIsQSap2We4gvhx929GH9dy8c_qmCw-Iy3ac_N-vLc_-JRemiSjGYQjQhhcIUAlD1oupkM7CXNKjCc1p6H2NoQlY8iq6GDkWg5Jy3i-q48MweXN1OAjL4KHrhzVzf_5Mfv3XDLE6B_AFut4SeGMx0YKI0iToM6QYS0PZ0kVJ">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-4">
+              <p class="text-white font-headline text-lg font-bold">Antiguo Testamento</p>
+            </div>
+          </div>
+          <div onclick="switchTab('tab-lector'); setLectorToBook(39)" class="group relative overflow-hidden h-36 rounded-xl cursor-pointer">
+            <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDmDynnPR0O40gsyoPBOmnZlLaGEb8-Ksrx07g2aUZGr47Wkm6WyF3lqrrPiGMqIN-e3S7rasC_xSQoRjn6Ts1cb1Qem-mFcdm04LjYzSwD3hXeAAkmLZVlPerZJ_lz_hTxarISV9-nzrqrW-Ps1vWEJ_tc6_1FFaJ4YFYPSUMJFNRmwls6QwwqOYI0o-FF0JfEoe-6RmoCrA0zw4UBoh9I5m7tFeRMeYGnpyV_gjYAxarpLlBTOQV4xUgA3MgT0D4kc7oKum_M_Lz">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-4">
+              <p class="text-white font-headline text-lg font-bold">Nuevo Testamento</p>
+            </div>
+          </div>
+          <div onclick="switchTab('tab-reflexiones')" class="group relative overflow-hidden h-36 rounded-xl cursor-pointer">
+            <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxZ7qX9AFk9fT7ODOVY6-np2x8_raFx3hfwBLjaOF4DjFTaZDp3XsBGeUldHOnafIoaHejn4D6YtEjQ9nDA4i0fsUrtHOOHPQ9NYxhvN8xoZgSCa_rKXYQ3UANcQWkI2S-ARKWN6vYx3DqCzHTihQamku7ZPRRKAuC7XLiFJM2rJMPXrr-ubKzHVyrgj5mQOmMZDrLtD2Z4n7daiOroFqJM4ClF6GP5t9f_2EGueakyFiNWaxwEuRqh8YsPI6etjQ2Xdw6-iaIPMXL">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-4">
+              <p class="text-white font-headline text-lg font-bold">Devocionales Diarios</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </section>
 
     <!-- ── TAB: LECTOR ── -->
-    <section class="tab-screen" id="tab-lector">
-      <div class="section-header">
-        <div class="section-title">📖 Lector Bíblico</div>
-      </div>
-      <div class="lector-controls">
-        <select class="select-field" id="sel-libro" onchange="onLibroChange()">
-          <option value="">— Selecciona un libro —</option>
-        </select>
-        <div style="display:flex; gap:10px;">
-          <select class="select-field" id="sel-capitulo" style="flex:1;" onchange="loadCapitulo()">
+    <section id="tab-lector" class="tab-screen hidden space-y-8">
+      <header>
+        <h2 class="font-headline text-3xl font-bold text-on-surface">Escrituras</h2>
+        <p class="text-on-surface-variant font-body mt-1">Busque y medite en la Palabra de Dios.</p>
+      </header>
+
+      <!-- Controles de selección -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+        <!-- Selector de Libro -->
+        <div class="flex flex-col gap-1">
+          <label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Libro</label>
+          <select id="sel-libro" onchange="onLibroChange()" class="w-full bg-surface-container-lowest border-none outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-2.5 font-headline text-on-surface transition-all cursor-pointer">
+            <option value="">— Selecciona un libro —</option>
+          </select>
+        </div>
+        <!-- Selector de Capítulo -->
+        <div class="flex flex-col gap-1">
+          <label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Capítulo</label>
+          <select id="sel-capitulo" onchange="loadCapitulo()" class="w-full bg-surface-container-lowest border-none outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-2.5 font-headline text-on-surface transition-all cursor-pointer">
             <option value="">Cap.</option>
           </select>
-          <select class="select-field" id="sel-version" style="flex:1.5;" onchange="loadCapitulo()">
-            <option value="rva">RVA 1909</option>
+        </div>
+        <!-- Selector de Versión -->
+        <div class="flex flex-col gap-1">
+          <label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Versión</label>
+          <select id="sel-version" onchange="loadCapitulo()" class="w-full bg-surface-container-lowest border-none outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-2.5 font-headline text-on-surface transition-all cursor-pointer">
+            <option value="rva">Reina-Valera 1960</option>
             <option value="nvi">NVI (adaptada)</option>
           </select>
         </div>
       </div>
 
-      <div class="verse-display" id="verse-display">
-        <div class="empty-state">
-          <div class="empty-state-icon">📖</div>
-          <p>Selecciona un libro y capítulo<br>para comenzar a leer.</p>
+      <!-- Pantalla del Lector -->
+      <div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm border border-outline-variant/10 min-h-[300px] transition-all duration-300" id="reading-canvas">
+        <div id="verse-display" class="space-y-6">
+          <div class="empty-state text-center py-16 text-on-surface-variant">
+            <div class="text-5xl opacity-40 mb-3">book</div>
+            <p>Selecciona un libro y capítulo para comenzar a leer.</p>
+          </div>
         </div>
       </div>
 
-      <div class="lector-nav">
-        <button class="btn-nav" id="btn-cap-prev" onclick="navCapitulo(-1)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          Anterior
+      <!-- Navegación del Lector -->
+      <nav class="flex justify-between items-center border-t border-outline-variant/20 pt-6">
+        <button id="btn-cap-prev" onclick="navCapitulo(-1)" class="flex flex-col items-start gap-1 group text-left">
+          <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">Anterior</span>
+          <div class="flex items-center gap-1.5 text-on-surface font-headline font-semibold">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Capítulo Anterior
+          </div>
         </button>
-        <button class="btn-nav" id="btn-cap-next" onclick="navCapitulo(1)">
-          Siguiente
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <div class="h-8 w-px bg-outline-variant/30"></div>
+        <button id="btn-cap-next" onclick="navCapitulo(1)" class="flex flex-col items-end gap-1 group text-right">
+          <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">Siguiente</span>
+          <div class="flex items-center gap-1.5 text-on-surface font-headline font-semibold">
+            Capítulo Siguiente
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </div>
         </button>
-      </div>
+      </nav>
     </section>
 
     <!-- ── TAB: BOSQUEJOS ── -->
-    <section class="tab-screen" id="tab-bosquejos">
-      <div class="section-header">
-        <div class="section-title">📝 Mis Bosquejos</div>
-        <button class="section-badge" style="cursor:pointer;" onclick="showEditorBosquejo()">+ Nuevo</button>
+    <section id="tab-bosquejos" class="tab-screen hidden">
+      <!-- 1. VISTA DE LISTA DE BOSQUEJOS -->
+      <div id="bosquejo-list-container" class="space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="font-headline text-3xl font-bold text-on-surface">Mis Bosquejos</h2>
+          <button onclick="showEditorBosquejo()" class="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold uppercase tracking-widest shadow-md hover:scale-105 transition-transform active:scale-95">
+            <span class="material-symbols-outlined text-sm">add</span> Nuevo
+          </button>
+        </div>
+        <div class="relative">
+          <input id="search-bosquejos" oninput="renderBosquejos()" type="search" placeholder="Buscar bosquejos por título o pasaje..." class="w-full bg-surface-container-lowest border border-outline-variant/20 outline-none focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-4 py-3 font-body text-on-surface transition-all" />
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+        </div>
+        
+        <div id="bosquejo-list" class="flex flex-col gap-4">
+          <div id="bosquejo-empty" class="text-center py-12 text-on-surface-variant bg-surface-container-low rounded-xl p-8">
+            <span class="material-symbols-outlined text-5xl opacity-40 mb-3 block">edit_note</span>
+            <p class="font-body">Aún no tienes bosquejos.<br>Toca <strong>Nuevo</strong> para crear el primero.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
-        <input class="search-input" id="search-bosquejos" type="search" placeholder="Buscar bosquejos..." oninput="renderBosquejos()"/>
-      </div>
+      <!-- 2. VISTA DE EDITOR DE BOSQUEJOS (SCREEN ORIGINAL DETALLADO) -->
+      <div id="bosquejo-editor-container" class="hidden space-y-8">
+        <header class="flex justify-between items-center pb-4 border-b border-outline-variant/20">
+          <div>
+            <button onclick="closeEditorBosquejo()" class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary font-label text-xs uppercase tracking-widest font-bold mb-2">
+              <span class="material-symbols-outlined text-sm">arrow_back</span> Volver
+            </button>
+            <h2 id="editor-bosquejo-title" class="font-headline text-3xl font-bold text-on-surface">Nuevo Bosquejo</h2>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openVerseModal('bosquejo')" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container text-primary font-label text-xs font-bold uppercase tracking-widest hover:bg-surface-container-high transition-colors">
+              <span class="material-symbols-outlined text-sm">auto_stories</span> +Versículo
+            </button>
+            <button onclick="saveBosquejo()" class="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-primary text-on-primary font-label text-xs font-bold uppercase tracking-widest shadow-md hover:scale-105 active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-sm">save</span> Guardar
+            </button>
+          </div>
+        </header>
 
-      <div class="bosquejo-list" id="bosquejo-list">
-        <div class="empty-state" id="bosquejo-empty">
-          <div class="empty-state-icon">📝</div>
-          <p>Aún no tienes bosquejos.<br>Toca <strong>+ Nuevo</strong> para crear el primero.</p>
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Título -->
+            <div class="space-y-2">
+              <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Tema / Título del Sermón</label>
+              <input id="b-titulo" class="w-full bg-surface-container-lowest border border-outline-variant/20 outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3 text-lg font-headline placeholder:text-outline-variant transition-all" placeholder="Ej. La Armadura de Dios" type="text" onfocus="lastBosquejoField='b-titulo'">
+            </div>
+            <!-- Pasaje -->
+            <div class="space-y-2">
+              <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Pasaje Principal</label>
+              <div class="relative">
+                <input id="b-pasaje" class="w-full bg-surface-container-lowest border border-outline-variant/20 outline-none focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-4 py-3 text-lg font-headline placeholder:text-outline-variant transition-all" placeholder="Efesios 6:10-18" type="text" onfocus="lastBosquejoField='b-pasaje'">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">book</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Objetivo -->
+          <div class="space-y-2">
+            <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Objetivo del Mensaje</label>
+            <input id="b-objetivo" class="w-full bg-surface-container-lowest border border-outline-variant/20 outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3 font-body placeholder:text-outline-variant transition-all" placeholder="¿Qué quiero lograr en los oyentes?" type="text" onfocus="lastBosquejoField='b-objetivo'">
+          </div>
+
+          <!-- Campos de Desarrollo del Bosquejo -->
+          <div class="space-y-6">
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 space-y-2">
+              <div class="flex justify-between items-center">
+                <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">📖 Introducción</label>
+                <button onclick="openVerseModal('b-intro')" class="text-primary font-label text-[10px] uppercase font-bold tracking-widest hover:underline">+ Insertar Versículo</button>
+              </div>
+              <textarea id="b-intro" class="w-full bg-transparent border-none outline-none font-body text-on-surface focus:ring-0 min-h-[100px] resize-none" placeholder="Anécdota, pregunta de impacto o introducción..." onfocus="lastBosquejoField='b-intro'"></textarea>
+            </div>
+
+            <!-- Puntos de Desarrollo Exegético (Anteriormente un solo textarea grande) -->
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 space-y-2">
+              <div class="flex justify-between items-center">
+                <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">🏗️ Bosquejo de Puntos (Desarrollo)</label>
+                <button onclick="openVerseModal('b-desarrollo')" class="text-primary font-label text-[10px] uppercase font-bold tracking-widest hover:underline">+ Insertar Versículo</button>
+              </div>
+              <textarea id="b-desarrollo" class="w-full bg-transparent border-none outline-none font-headline text-on-surface focus:ring-0 min-h-[180px] resize-none" placeholder="I. Punto 1&#10;   - Subpunto&#10;II. Punto 2&#10;   - Subpunto&#10;III. Punto 3" onfocus="lastBosquejoField='b-desarrollo'"></textarea>
+            </div>
+
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 space-y-2">
+              <div class="flex justify-between items-center">
+                <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">🎯 Conclusión y Llamado</label>
+                <button onclick="openVerseModal('b-conclusion')" class="text-primary font-label text-[10px] uppercase font-bold tracking-widest hover:underline">+ Insertar Versículo</button>
+              </div>
+              <textarea id="b-conclusion" class="w-full bg-transparent border-none outline-none font-body text-on-surface focus:ring-0 min-h-[100px] resize-none" placeholder="Llamado a la acción, conclusión y cierre..." onfocus="lastBosquejoField='b-conclusion'"></textarea>
+            </div>
+
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 space-y-2">
+              <div class="flex justify-between items-center">
+                <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">🙏 Aplicación Personal</label>
+                <button onclick="openVerseModal('b-reflexion')" class="text-primary font-label text-[10px] uppercase font-bold tracking-widest hover:underline">+ Insertar Versículo</button>
+              </div>
+              <textarea id="b-reflexion" class="w-full bg-transparent border-none outline-none font-body text-on-surface focus:ring-0 min-h-[100px] resize-none" placeholder="¿Cómo aplicamos esta palabra a nuestra vida diaria?" onfocus="lastBosquejoField='b-reflexion'"></textarea>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ── TAB: REFLEXIONES ── -->
-    <section class="tab-screen" id="tab-reflexiones">
-      <div class="section-header">
-        <div class="section-title">🙏 Mis Reflexiones</div>
-        <button class="section-badge" style="cursor:pointer;" onclick="showEditorReflexion()">+ Nueva</button>
+    <section id="tab-reflexiones" class="tab-screen hidden">
+      <!-- 1. VISTA DE LISTA DE REFLEXIONES -->
+      <div id="reflexion-list-container" class="space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="font-headline text-3xl font-bold text-on-surface">Mis Reflexiones</h2>
+          <button onclick="showEditorReflexion()" class="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-on-primary font-label text-xs font-bold uppercase tracking-widest shadow-md hover:scale-105 transition-transform active:scale-95">
+            <span class="material-symbols-outlined text-sm">add</span> Nueva
+          </button>
+        </div>
+        <div class="relative">
+          <input id="search-reflexiones" oninput="renderReflexiones()" type="search" placeholder="Buscar reflexiones..." class="w-full bg-surface-container-lowest border border-outline-variant/20 outline-none focus:ring-2 focus:ring-primary/20 rounded-xl pl-11 pr-4 py-3 font-body text-on-surface transition-all" />
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+        </div>
+        
+        <div id="reflexion-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
+          <div id="reflexion-empty" class="col-span-full text-center py-12 text-on-surface-variant bg-surface-container-low rounded-xl p-8">
+            <span class="material-symbols-outlined text-5xl opacity-40 mb-3 block">history_edu</span>
+            <p class="font-body">Aún no tienes reflexiones.<br>Toca <strong>Nueva</strong> para comenzar tu diario.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
-        <input class="search-input" id="search-reflexiones" type="search" placeholder="Buscar reflexiones..." oninput="renderReflexiones()"/>
-      </div>
+      <!-- 2. VISTA DE EDITOR DE REFLEXIONES -->
+      <div id="reflexion-editor-container" class="hidden space-y-8">
+        <header class="flex justify-between items-center pb-4 border-b border-outline-variant/20">
+          <div>
+            <button onclick="closeEditorReflexion()" class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary font-label text-xs uppercase tracking-widest font-bold mb-2">
+              <span class="material-symbols-outlined text-sm">arrow_back</span> Volver
+            </button>
+            <h2 id="editor-reflexion-title" class="font-headline text-3xl font-bold text-on-surface">Nueva Reflexión</h2>
+          </div>
+          <button onclick="saveReflexion()" class="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-primary text-on-primary font-label text-xs font-bold uppercase tracking-widest shadow-md hover:scale-105 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-sm">save</span> Guardar
+          </button>
+        </header>
 
-      <div id="reflexion-list" style="display:flex; flex-direction:column; gap:12px;">
-        <div class="empty-state" id="reflexion-empty">
-          <div class="empty-state-icon">🙏</div>
-          <p>Aún no tienes reflexiones.<br>Toca <strong>+ Nueva</strong> para comenzar tu diario.</p>
+        <div class="space-y-6">
+          <!-- Pasaje de Inspiración (Opcional) -->
+          <div class="space-y-2">
+            <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Pasaje de Referencia</label>
+            <input id="r-pasaje" class="w-full bg-surface-container-lowest border border-outline-variant/20 outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3 font-headline placeholder:text-outline-variant transition-all" placeholder="Ej. Salmos 23:1 o Juan 3:16" type="text">
+          </div>
+
+          <!-- Color de etiqueta -->
+          <div class="space-y-2">
+            <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Color de etiqueta</label>
+            <div class="flex gap-3" id="color-dots-container">
+              <button class="w-8 h-8 rounded-full bg-slate-200 border-2 border-primary active:scale-90 transition-transform" data-color="none" onclick="selectReflColor(this,'none')" title="Sin color"></button>
+              <button class="w-8 h-8 rounded-full bg-yellow-200 border-2 border-transparent active:scale-90 transition-transform" data-color="yellow" onclick="selectReflColor(this,'yellow')" title="Amarillo"></button>
+              <button class="w-8 h-8 rounded-full bg-green-200 border-2 border-transparent active:scale-90 transition-transform" data-color="green" onclick="selectReflColor(this,'green')" title="Verde"></button>
+              <button class="w-8 h-8 rounded-full bg-blue-200 border-2 border-transparent active:scale-90 transition-transform" data-color="blue" onclick="selectReflColor(this,'blue')" title="Azul"></button>
+              <button class="w-8 h-8 rounded-full bg-pink-200 border-2 border-transparent active:scale-90 transition-transform" data-color="pink" onclick="selectReflColor(this,'pink')" title="Rosa"></button>
+            </div>
+          </div>
+
+          <!-- Textarea Principal -->
+          <div class="space-y-2 relative">
+            <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">✍️ Mi Reflexión Personal</label>
+            <div class="relative">
+              <textarea id="r-contenido" class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-6 font-headline text-lg leading-relaxed text-on-surface placeholder:text-outline-variant/60 focus:ring-2 focus:ring-primary/20 min-h-[300px] outline-none transition-all" placeholder="¿Qué te habló este pasaje hoy? ¿Qué sientes que Dios te está diciendo? Escribe libremente..."></textarea>
+              <div class="absolute -left-3 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary/35 via-primary/5 to-transparent"></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ══ BOTTOM NAV ══ -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" id="nav-inicio" onclick="switchTab('tab-inicio')">
-      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Inicio
+  <!-- ══ NAV BAR INFERIOR (SPA) ══ -->
+  <nav class="fixed bottom-0 left-0 w-full z-40 bg-surface-container-lowest/80 dark:bg-surface-dim/80 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-3 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] border-t border-outline-variant/10 rounded-t-2xl">
+    <button id="nav-inicio" onclick="switchTab('tab-inicio')" class="flex flex-col items-center justify-center text-primary bg-primary-fixed/30 rounded-full px-4 py-1.5 scale-95 active:scale-90 transition-all font-label text-xs font-bold uppercase tracking-wider gap-0.5">
+      <span class="material-symbols-outlined">home</span>
+      <span>Inicio</span>
     </button>
-    <button class="nav-btn" id="nav-lector" onclick="switchTab('tab-lector')">
-      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-      Escrituras
+    <button id="nav-lector" onclick="switchTab('tab-lector')" class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary scale-95 active:scale-90 transition-all font-label text-xs font-bold uppercase tracking-wider gap-0.5">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span>Lecturas</span>
     </button>
-    <button class="nav-btn" id="nav-bosquejos" onclick="switchTab('tab-bosquejos')">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Bosquejos
+    <button id="nav-bosquejos" onclick="switchTab('tab-bosquejos')" class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary scale-95 active:scale-90 transition-all font-label text-xs font-bold uppercase tracking-wider gap-0.5">
+      <span class="material-symbols-outlined">edit_note</span>
+      <span>Bosquejos</span>
     </button>
-    <button class="nav-btn" id="nav-reflexiones" onclick="switchTab('tab-reflexiones')">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-      Reflexiones
+    <button id="nav-reflexiones" onclick="switchTab('tab-reflexiones')" class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary scale-95 active:scale-90 transition-all font-label text-xs font-bold uppercase tracking-wider gap-0.5">
+      <span class="material-symbols-outlined">history_edu</span>
+      <span>Reflexión</span>
     </button>
   </nav>
 
-</div><!-- /.app-shell -->
-
-<!-- ══ EDITOR BOSQUEJO ══ -->
-<div class="editor-screen" id="editor-bosquejo">
-  <div class="editor-header">
-    <button class="btn-back" onclick="closeEditorBosquejo()">← Volver</button>
-    <h2 id="editor-bosquejo-title">Nuevo Bosquejo</h2>
-    <button class="btn-verse-open" onclick="openVerseModal()" title="Buscar e insertar versículo">📖 Versículos</button>
-    <button class="btn-save-editor" onclick="saveBosquejo()">Guardar ✓</button>
-  </div>
-  <div class="editor-body">
-    <div>
-      <div class="field-label">Tema / Título del Sermón</div>
-      <input class="field-input" id="b-titulo" type="text" placeholder="Ej: El Poder de la Fe" onfocus="lastBosquejoField='b-titulo'"/>
-    </div>
-    <div>
-      <div class="field-label">Objetivo</div>
-      <input class="field-input" id="b-objetivo" type="text" placeholder="¿Qué quiero que los oyentes logren?" onfocus="lastBosquejoField='b-objetivo'"/>
-    </div>
-    <div>
-      <div class="field-label">Pasaje Principal</div>
-      <input class="field-input" id="b-pasaje" type="text" placeholder="Ej: Hebreos 11:1-6" onfocus="lastBosquejoField='b-pasaje'"/>
-    </div>
-    <div>
-      <div class="field-label">
-        📖 Introducción
-        <button class="field-insert-btn" onclick="openVerseModal('b-intro')" title="Insertar versículo aquí">📖+</button>
+  <!-- ══ AJUSTES DE LECTURA (MODAL GLOBAL) ══ -->
+  <div class="fixed inset-0 z-50 flex items-end justify-center px-4 pb-24 pointer-events-none opacity-0 transition-opacity duration-300" id="settings-panel">
+    <div class="bg-surface-container-lowest/90 backdrop-blur-2xl w-full max-w-lg rounded-2xl p-6 shadow-2xl pointer-events-auto border border-outline-variant/20">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant">Ajustes de Lectura</h3>
+        <button class="text-on-surface-variant hover:text-primary" onclick="toggleSettings()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
       </div>
-      <textarea class="field-textarea" id="b-intro" onfocus="lastBosquejoField='b-intro'" placeholder="¿Cómo captarás la atención? Anécdota, pregunta, estadística..."></textarea>
-    </div>
-    <div>
-      <div class="field-label">
-        🏗️ Desarrollo / Bosquejo de Puntos
-        <button class="field-insert-btn" onclick="openVerseModal('b-desarrollo')" title="Insertar versículo aquí">📖+</button>
+      <!-- Theme Options -->
+      <div class="grid grid-cols-3 gap-3 mb-8">
+        <button class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border-2 border-primary transition-all" id="theme-btn-light" onclick="setReadingTheme('light')">
+          <div class="w-8 h-8 rounded-full bg-white border border-outline-variant"></div>
+          <span class="font-label text-[10px] uppercase font-bold text-on-surface">Claro</span>
+        </button>
+        <button class="flex flex-col items-center gap-2 p-3 rounded-xl bg-[#f4ecd8] border-2 border-transparent transition-all" id="theme-btn-sepia" onclick="setReadingTheme('sepia')">
+          <div class="w-8 h-8 rounded-full bg-[#f4ecd8] border border-stone-300"></div>
+          <span class="font-label text-[10px] uppercase font-bold text-[#433422]">Sepia</span>
+        </button>
+        <button class="flex flex-col items-center gap-2 p-3 rounded-xl bg-slate-900 border-2 border-transparent transition-all" id="theme-btn-dark" onclick="setReadingTheme('dark')">
+          <div class="w-8 h-8 rounded-full bg-slate-800"></div>
+          <span class="font-label text-[10px] uppercase font-bold text-slate-100">Noche</span>
+        </button>
       </div>
-      <textarea class="field-textarea" id="b-desarrollo" onfocus="lastBosquejoField='b-desarrollo'" style="min-height:140px;" placeholder="I. Punto 1&#10;   - Subpunto&#10;II. Punto 2&#10;   - Subpunto&#10;III. Punto 3"></textarea>
-    </div>
-    <div>
-      <div class="field-label">
-        🎯 Conclusión y Llamado
-        <button class="field-insert-btn" onclick="openVerseModal('b-conclusion')" title="Insertar versículo aquí">📖+</button>
+      <!-- Font Size Slider -->
+      <div class="space-y-4">
+        <div class="flex justify-between items-center px-1">
+          <span class="material-symbols-outlined text-sm text-on-surface-variant">text_fields</span>
+          <span class="material-symbols-outlined text-2xl text-on-surface-variant">text_fields</span>
+        </div>
+        <input class="w-full h-1 bg-secondary-container rounded-lg appearance-none cursor-pointer accent-primary" id="font-slider" max="38" min="16" oninput="updateFontSize(this.value)" step="2" type="range" value="20">
       </div>
-      <textarea class="field-textarea" id="b-conclusion" onfocus="lastBosquejoField='b-conclusion'" placeholder="Cierre del mensaje y llamado a la acción..."></textarea>
-    </div>
-    <div>
-      <div class="field-label">
-        🙏 Reflexión / Aplicación Personal
-        <button class="field-insert-btn" onclick="openVerseModal('b-reflexion')" title="Insertar versículo aquí">📖+</button>
-      </div>
-      <textarea class="field-textarea" id="b-reflexion" onfocus="lastBosquejoField='b-reflexion'" placeholder="¿Cómo aplicamos esto en nuestra vida diaria?"></textarea>
-    </div>
-    <div style="height:20px;"></div>
-  </div>
-</div>
-
-<!-- ══ EDITOR REFLEXIÓN ══ -->
-<div class="editor-screen" id="editor-reflexion">
-  <div class="editor-header">
-    <button class="btn-back" onclick="closeEditorReflexion()">← Volver</button>
-    <h2 id="editor-reflexion-title">Nueva Reflexión</h2>
-    <button class="btn-save-editor" onclick="saveReflexion()">Guardar ✓</button>
-  </div>
-  <div class="editor-body">
-    <div>
-      <div class="field-label">Pasaje Bíblico</div>
-      <input class="field-input" id="r-pasaje" type="text" placeholder="Ej: Juan 3:16 | Salmo 23"/>
-    </div>
-    <div>
-      <div class="field-label">Color de etiqueta</div>
-      <div class="color-dots">
-        <div class="color-dot active" data-color="none" onclick="selectReflColor(this,'none')" title="Sin color"></div>
-        <div class="color-dot" data-color="yellow" onclick="selectReflColor(this,'yellow')"></div>
-        <div class="color-dot" data-color="green" onclick="selectReflColor(this,'green')"></div>
-        <div class="color-dot" data-color="blue" onclick="selectReflColor(this,'blue')"></div>
-        <div class="color-dot" data-color="pink" onclick="selectReflColor(this,'pink')"></div>
-      </div>
-    </div>
-    <div>
-      <div class="field-label">✍️ Mi Reflexión Personal</div>
-      <textarea class="field-textarea" id="r-contenido" style="min-height:200px;" placeholder="¿Qué te habló este pasaje hoy? ¿Qué sientes que Dios te está diciendo?&#10;&#10;Escribe libremente, este es tu espacio personal..."></textarea>
-    </div>
-    <div style="height:20px;"></div>
-  </div>
-</div>
-
-<!-- ══ ZEN DRAWER ══ -->
-<div class="zen-drawer-overlay" id="zen-drawer-overlay" onclick="closeZenDrawer(event)">
-  <div class="zen-drawer">
-    <div class="zen-drawer-title">🎧 Elige tu sonido de enfoque</div>
-    <div class="zen-option active" data-sound="none" onclick="selectZenSound(this)">
-      <span class="zen-option-icon">🔇</span>
-      <div><div class="zen-option-name">Silencio</div><div class="zen-option-desc">Sin sonido de fondo</div></div>
-    </div>
-    <div class="zen-option" data-sound="sublime" onclick="selectZenSound(this)">
-      <span class="zen-option-icon">🎹</span>
-      <div><div class="zen-option-name">Sublime Gracia</div><div class="zen-option-desc">Melodía suave en piano zen</div></div>
-    </div>
-    <div class="zen-option" data-sound="fidelidad" onclick="selectZenSound(this)">
-      <span class="zen-option-icon">🕊️</span>
-      <div><div class="zen-option-name">Tu Fidelidad</div><div class="zen-option-desc">Notas pacíficas e inspiradoras</div></div>
-    </div>
-    <div class="zen-option" data-sound="grande" onclick="selectZenSound(this)">
-      <span class="zen-option-icon">🌟</span>
-      <div><div class="zen-option-name">Cuán Grande Es Él</div><div class="zen-option-desc">Melodía arpegiada para meditar</div></div>
-    </div>
-    <div class="zen-option" data-sound="lluvia" onclick="selectZenSound(this)">
-      <span class="zen-option-icon">🌧️</span>
-      <div><div class="zen-option-name">Lluvia de Oración</div><div class="zen-option-desc">Lluvia suave mezclada con acordes de paz</div></div>
     </div>
   </div>
-</div>
 
-<!-- ══ VERSE SELECTOR MODAL ══ -->
-<div id="vm-overlay" class="vm-overlay">
-  <div class="vm-modal">
-
-    <!-- Header -->
-    <div class="vm-header">
-      <span class="vm-title">📖 Insertar Versículos</span>
-      <button class="vm-close" onclick="closeVerseModal()">✕</button>
-    </div>
-
-    <!-- Testament filter -->
-    <div class="vm-testament-bar">
-      <button class="vm-t-btn active" data-t="AT" onclick="vmFilterTestament(this)">📜 Antiguo Testamento</button>
-      <button class="vm-t-btn" data-t="NT" onclick="vmFilterTestament(this)">✝️ Nuevo Testamento</button>
-    </div>
-
-    <!-- Selectors -->
-    <div class="vm-selectors">
-      <select class="select-field" id="vm-libro" onchange="vmOnLibroChange()">
-        <option value="">— Selecciona un libro —</option>
-      </select>
-      <select class="select-field" id="vm-cap" onchange="vmLoadVerses()">
-        <option value="">Capítulo</option>
-      </select>
-    </div>
-
-    <!-- Range bar -->
-    <div class="vm-range-bar" id="vm-range-bar" style="display:none;">
-      <span class="vm-range-label">📏 Rango rápido:</span>
-      <span class="vm-range-label">Del v.</span>
-      <input class="vm-range-input" type="number" id="vm-range-from" min="1" placeholder="1"/>
-      <span class="vm-range-label">al v.</span>
-      <input class="vm-range-input" type="number" id="vm-range-to" min="1" placeholder="5"/>
-      <button class="vm-range-apply" onclick="vmApplyRange()">Aplicar</button>
-      <button class="vm-range-apply" onclick="vmClearAll()" style="background:rgba(192,57,43,0.2); border-color:rgba(192,57,43,0.4); color:#e74c3c;">✕ Limpiar</button>
-    </div>
-
-    <!-- Verse list -->
-    <div class="vm-verse-list" id="vm-list">
-      <div class="empty-state" style="padding:30px 20px;">
-        <div class="empty-state-icon">📖</div>
-        <p>Selecciona un libro y capítulo<br>para ver los versículos.</p>
+  <!-- ══ DRAWER MENU HAMBURGUESA ══ -->
+  <div id="menu-drawer" onclick="toggleMenuDrawer(event)" class="fixed inset-0 z-50 flex pointer-events-none opacity-0 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
+    <div class="bg-surface-container-lowest w-80 max-w-[85vw] h-full shadow-2xl pointer-events-auto flex flex-col transition-transform duration-300 -translate-x-full" id="menu-drawer-content">
+      <div class="p-6 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low">
+        <div class="flex items-center gap-2">
+          <img src="logo-hosanna.png" alt="Hosanna Sur" class="w-8 h-8 object-contain bg-white rounded-full p-0.5 border border-outline-variant/30">
+          <span class="font-headline font-bold text-primary">Hosanna Sur</span>
+        </div>
+        <button onclick="toggleMenuDrawer()" class="text-on-surface-variant hover:text-primary flex items-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="p-6 flex-1 space-y-8 overflow-y-auto">
+        <div class="space-y-3">
+          <h3 class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Iglesia Hosanna Sur</h3>
+          <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+            Un espacio de estudio bíblico familiar para profundizar en las escrituras y fortalecer nuestra fe comunitaria.
+          </p>
+        </div>
+        <div class="space-y-4">
+          <h3 class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Navegación Rápida</h3>
+          <button onclick="switchTab('tab-inicio'); toggleMenuDrawer();" class="flex items-center gap-3 w-full p-2.5 rounded-lg hover:bg-surface-container-low text-left transition-colors">
+            <span class="material-symbols-outlined text-primary">home</span>
+            <span class="font-body text-sm font-semibold">Inicio / Dashboard</span>
+          </button>
+          <button onclick="switchTab('tab-lector'); toggleMenuDrawer();" class="flex items-center gap-3 w-full p-2.5 rounded-lg hover:bg-surface-container-low text-left transition-colors">
+            <span class="material-symbols-outlined text-primary">menu_book</span>
+            <span class="font-body text-sm font-semibold">Lector Bíblico</span>
+          </button>
+          <button onclick="switchTab('tab-bosquejos'); toggleMenuDrawer();" class="flex items-center gap-3 w-full p-2.5 rounded-lg hover:bg-surface-container-low text-left transition-colors">
+            <span class="material-symbols-outlined text-primary">edit_note</span>
+            <span class="font-body text-sm font-semibold">Mis Bosquejos</span>
+          </button>
+          <button onclick="switchTab('tab-reflexiones'); toggleMenuDrawer();" class="flex items-center gap-3 w-full p-2.5 rounded-lg hover:bg-surface-container-low text-left transition-colors">
+            <span class="material-symbols-outlined text-primary">history_edu</span>
+            <span class="font-body text-sm font-semibold">Mis Reflexiones</span>
+          </button>
+        </div>
+        <div class="space-y-3 border-t border-outline-variant/20 pt-6">
+          <h3 class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Información de Contacto</h3>
+          <p class="font-body text-xs text-on-surface-variant">¿Quieres saber más de nuestras reuniones familiares?</p>
+          <div class="flex flex-col gap-2">
+            <a href="#" class="text-primary hover:underline font-label text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">mail</span> hosannasur@iglesia.org
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="p-6 bg-surface-container-low border-t border-outline-variant/20 text-center font-label text-[10px] tracking-wider text-on-surface-variant uppercase">
+        Hosanna Sur App — 100% Offline
       </div>
     </div>
-
-    <!-- Preview -->
-    <div class="vm-preview" id="vm-preview">
-      <div class="vm-preview-header">
-        <span class="vm-preview-label">📋 Vista previa — <span id="vm-count">0</span> versículo(s) seleccionado(s)</span>
-        <button class="vm-range-apply" onclick="vmClearAll()">✕ Limpiar</button>
-      </div>
-      <div class="vm-preview-text" id="vm-preview-text">Toca versículos arriba para seleccionarlos.</div>
-    </div>
-
-    <!-- Actions -->
-    <div class="vm-actions">
-      <button class="btn-nav" onclick="vmCopy()">📋 Solo copiar</button>
-      <button class="btn-primary" style="flex:1; margin:0;" onclick="vmInsert()">✅ Insertar al Bosquejo</button>
-    </div>
-
   </div>
-</div>
 
-<script src="app.js"></script>
+  <!-- ══ AUDIO SELECTOR DRAWER ══ -->
+  <div class="zen-drawer-overlay fixed inset-0 z-50 flex items-end justify-center pointer-events-none opacity-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" id="zen-drawer-overlay" onclick="closeZenDrawer(event)">
+    <div class="zen-drawer w-full max-w-lg bg-surface-container-lowest rounded-t-2xl border-t border-outline-variant/20 p-6 shadow-2xl pointer-events-auto transition-transform duration-300 translate-y-full" id="zen-drawer-content">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant">🎧 Selecciona sonido de enfoque</h3>
+        <button class="text-on-surface-variant hover:text-primary" onclick="closeZenDrawer()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      
+      <div class="space-y-3">
+        <div class="flex items-center gap-4 p-4 rounded-xl border border-primary bg-primary/5 cursor-pointer hover:bg-primary/10 transition-colors" data-sound="none" onclick="selectZenSound(this)">
+          <span class="text-2xl">🔇</span>
+          <div>
+            <div class="font-headline text-sm font-semibold text-on-surface">Silencio</div>
+            <div class="font-label text-[10px] uppercase text-on-surface-variant">Sin sonido de fondo</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 cursor-pointer hover:bg-surface-container-low transition-colors" data-sound="sublime" onclick="selectZenSound(this)">
+          <span class="text-2xl">🎹</span>
+          <div>
+            <div class="font-headline text-sm font-semibold text-on-surface">Sublime Gracia</div>
+            <div class="font-label text-[10px] uppercase text-on-surface-variant">Melodía suave en piano zen</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 cursor-pointer hover:bg-surface-container-low transition-colors" data-sound="fidelidad" onclick="selectZenSound(this)">
+          <span class="text-2xl">🕊️</span>
+          <div>
+            <div class="font-headline text-sm font-semibold text-on-surface">Tu Fidelidad</div>
+            <div class="font-label text-[10px] uppercase text-on-surface-variant">Notas pacíficas e inspiradoras</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 cursor-pointer hover:bg-surface-container-low transition-colors" data-sound="grande" onclick="selectZenSound(this)">
+          <span class="text-2xl">🌟</span>
+          <div>
+            <div class="font-headline text-sm font-semibold text-on-surface">Cuán Grande Es Él</div>
+            <div class="font-label text-[10px] uppercase text-on-surface-variant">Melodía arpegiada para meditar</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 cursor-pointer hover:bg-surface-container-low transition-colors" data-sound="lluvia" onclick="selectZenSound(this)">
+          <span class="text-2xl">🌧️</span>
+          <div>
+            <div class="font-headline text-sm font-semibold text-on-surface">Lluvia de Oración</div>
+            <div class="font-label text-[10px] uppercase text-on-surface-variant">Lluvia suave mezclada con acordes de paz</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ INSERCIÓN DE VERSÍCULOS (MODAL SELECCIONADOR) ══ -->
+  <div id="vm-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300">
+    <div class="bg-surface-container-lowest w-full max-w-xl rounded-2xl shadow-2xl pointer-events-auto border border-outline-variant/20 flex flex-col max-h-[85vh]">
+      <!-- Header -->
+      <div class="p-4 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low rounded-t-2xl">
+        <span class="font-headline font-bold text-primary flex items-center gap-2">
+          <span class="material-symbols-outlined text-lg">book</span> Insertar Versículos
+        </span>
+        <button onclick="closeVerseModal()" class="text-on-surface-variant hover:text-primary flex items-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable content -->
+      <div class="p-6 overflow-y-auto space-y-6 flex-1">
+        <!-- Testament filter -->
+        <div class="grid grid-cols-2 gap-2 bg-surface-container p-1 rounded-xl">
+          <button class="vm-t-btn py-2 rounded-lg font-label text-xs font-bold uppercase tracking-wider text-primary bg-white shadow-sm" data-t="AT" onclick="vmFilterTestament(this)">📜 Antiguo Testamento</button>
+          <button class="vm-t-btn py-2 rounded-lg font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant/60" data-t="NT" onclick="vmFilterTestament(this)">✝️ Nuevo Testamento</button>
+        </div>
+
+        <!-- Selectores -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Libro</label>
+            <select class="w-full bg-surface-container-low border-none outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-2.5 font-headline text-on-surface cursor-pointer" id="vm-libro" onchange="vmOnLibroChange()">
+              <option value="">— Selecciona un libro —</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Capítulo</label>
+            <select class="w-full bg-surface-container-low border-none outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-2.5 font-headline text-on-surface cursor-pointer" id="vm-cap" onchange="vmLoadVerses()">
+              <option value="">Capítulo</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Rango Rápido -->
+        <div class="hidden flex-wrap items-center gap-2 p-3 bg-surface-container-low rounded-xl text-xs" id="vm-range-bar">
+          <span class="font-label font-bold text-on-surface-variant uppercase tracking-wider">Rango:</span>
+          <span class="text-on-surface-variant">Del</span>
+          <input class="w-14 bg-surface-container-lowest border-none outline-none rounded-lg px-2 py-1 text-center font-bold" type="number" id="vm-range-from" min="1" placeholder="1">
+          <span class="text-on-surface-variant">al</span>
+          <input class="w-14 bg-surface-container-lowest border-none outline-none rounded-lg px-2 py-1 text-center font-bold" type="number" id="vm-range-to" min="1" placeholder="5">
+          <button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label font-bold uppercase tracking-wider text-[10px]" onclick="vmApplyRange()">Aplicar</button>
+        </div>
+
+        <!-- Verses List -->
+        <div class="border border-outline-variant/20 rounded-xl p-4 bg-surface-container-lowest max-h-56 overflow-y-auto space-y-3" id="vm-list">
+          <div class="empty-state text-center py-6 text-on-surface-variant">
+            <p>Selecciona un libro y capítulo para ver los versículos.</p>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="bg-surface-container-low p-4 rounded-xl space-y-2" id="vm-preview">
+          <div class="flex justify-between items-center">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Selección — <span id="vm-count">0</span> versículo(s)</span>
+            <button onclick="vmClearAll()" class="text-error font-label text-[9px] uppercase tracking-wider font-bold hover:underline">Limpiar todo</button>
+          </div>
+          <div class="font-body text-sm text-on-surface" id="vm-preview-text">Toca versículos arriba para seleccionarlos.</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="p-4 bg-surface-container-low border-t border-outline-variant/20 flex gap-3 rounded-b-2xl">
+        <button class="px-5 py-2.5 rounded-xl border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-high font-label text-xs font-bold uppercase tracking-widest" onclick="vmCopy()">📋 Copiar</button>
+        <button class="flex-1 px-5 py-2.5 rounded-xl bg-primary text-on-primary shadow-md hover:scale-102 transition-transform active:scale-98 font-label text-xs font-bold uppercase tracking-widest" onclick="vmInsert()">✅ Insertar al Bosquejo</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>

@@ -109,7 +109,7 @@ async function fetchCapituloTexto(libroName, cap, versionVal) {
   return getCapituloTextoMock(libroName, cap);
 }
 
-// Versículos representativos por capítulo (generados para demostración offline)
+// Versículos de respaldo exegético offline
 function getCapituloTextoMock(libro, cap) {
   const seed = (libro.length * 7 + cap * 13) % VERSES.length;
   const count = 5 + (seed % 8); // entre 5 y 12 versículos
@@ -179,19 +179,119 @@ function formatDate(iso) {
   } catch { return ''; }
 }
 
-// ── TABS ──────────────────────────────────────────────────
+// ── TABS NAVEGACIÓN (SPA) ──────────────────────────────────
 function switchTab(tabId) {
-  document.querySelectorAll('.tab-screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  // Ocultar todas las pantallas
+  document.querySelectorAll('.tab-screen').forEach(s => {
+    s.classList.add('hidden');
+    s.classList.remove('block');
+  });
+  
+  // Mostrar pantalla activa
   const screen = $(tabId);
-  if (screen) screen.classList.add('active');
-  const navId = 'nav-' + tabId.replace('tab-', '');
-  const nb = $(navId);
-  if (nb) nb.classList.add('active');
+  if (screen) {
+    screen.classList.remove('hidden');
+    screen.classList.add('block');
+  }
+  
+  // Estilo inactivo para todos los botones de navegación inferior
+  const navIds = ['nav-inicio', 'nav-lector', 'nav-bosquejos', 'nav-reflexiones'];
+  navIds.forEach(id => {
+    const btn = $(id);
+    if (btn) {
+      btn.className = "flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary scale-95 active:scale-90 transition-all font-label text-xs font-bold uppercase tracking-wider gap-0.5";
+    }
+  });
+  
+  // Activar botón correspondiente
+  const activeNavId = 'nav-' + tabId.replace('tab-', '');
+  const activeBtn = $(activeNavId);
+  if (activeBtn) {
+    activeBtn.className = "flex flex-col items-center justify-center text-primary bg-primary-fixed/30 rounded-full px-4 py-1.5 scale-95 active:scale-90 transition-all font-label text-xs font-bold uppercase tracking-wider gap-0.5";
+  }
+  
+  // Mostrar u ocultar botón de engranaje en header
+  const settingsBtn = $('header-settings-btn');
+  if (settingsBtn) {
+    if (tabId === 'tab-lector') {
+      settingsBtn.classList.remove('hidden');
+    } else {
+      settingsBtn.classList.add('hidden');
+    }
+  }
+  
   currentTab = tabId;
-  if (tabId === 'tab-bosquejos')   renderBosquejos();
-  if (tabId === 'tab-reflexiones') renderReflexiones();
-  if (tabId === 'tab-inicio')      updateStats();
+  if (tabId === 'tab-bosquejos')   { closeEditorBosquejo(); renderBosquejos(); }
+  if (tabId === 'tab-reflexiones') { closeEditorReflexion(); renderReflexiones(); }
+  if (tabId === 'tab-inicio')      { updateStats(); updateGreeting(); }
+}
+
+// ── SALUDO DINÁMICO ───────────────────────────────────────
+function updateGreeting() {
+  const greetingEl = $('greeting-text');
+  const dateEl = $('date-text');
+  if (!greetingEl) return;
+  
+  const now = new Date();
+  const hour = now.getHours();
+  let greeting = 'Buenas tardes, Comunidad Hosanna Sur';
+  
+  if (hour >= 5 && hour < 12) {
+    greeting = 'Buenos días, Comunidad Hosanna Sur';
+  } else if (hour >= 12 && hour < 19) {
+    greeting = 'Buenas tardes, Comunidad Hosanna Sur';
+  } else {
+    greeting = 'Buenas noches, Comunidad Hosanna Sur';
+  }
+  
+  greetingEl.textContent = greeting;
+  
+  if (dateEl) {
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    let formatted = now.toLocaleDateString('es-ES', options);
+    formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+    dateEl.textContent = formatted;
+  }
+}
+
+// ── DRAWER MENU HAMBURGUESA ────────────────────────────────
+function toggleMenuDrawer(e) {
+  const drawer = $('menu-drawer');
+  const content = $('menu-drawer-content');
+  if (!drawer || !content) return;
+  
+  const isOpen = drawer.classList.contains('opacity-100');
+  
+  if (isOpen) {
+    if (e && e.target !== drawer && e.target.closest('#menu-drawer-content')) return;
+    content.classList.add('-translate-x-full');
+    content.classList.remove('translate-x-0');
+    drawer.classList.add('opacity-0', 'pointer-events-none');
+    drawer.classList.remove('opacity-100', 'pointer-events-auto');
+  } else {
+    drawer.classList.remove('opacity-0', 'pointer-events-none');
+    drawer.classList.add('opacity-100', 'pointer-events-auto');
+    setTimeout(() => {
+      content.classList.remove('-translate-x-full');
+      content.classList.add('translate-x-0');
+    }, 50);
+  }
+}
+
+// ── MODAL DE AJUSTES ───────────────────────────────────────
+function toggleSettings() {
+  const panel = $('settings-panel');
+  if (!panel) return;
+  
+  const isOpen = panel.classList.contains('opacity-100');
+  
+  if (isOpen) {
+    panel.classList.add('opacity-0', 'pointer-events-none');
+    panel.classList.remove('opacity-100', 'pointer-events-auto');
+  } else {
+    panel.classList.remove('opacity-0', 'pointer-events-none');
+    panel.classList.add('opacity-100', 'pointer-events-auto');
+  }
 }
 
 // ── VERSÍCULO DEL DÍA ─────────────────────────────────────
@@ -205,7 +305,7 @@ function showVerse(idx) {
   const v = VERSES[idx];
   const vt = $('verse-text'), vr = $('verse-ref');
   if (vt) vt.textContent = '\u201C' + v.text + '\u201D';
-  if (vr) vr.textContent = '— ' + v.ref;
+  if (vr) vr.textContent = '— ' + v.ref.toUpperCase();
 }
 
 function bindVerseButtons() {
@@ -219,7 +319,7 @@ function bindVerseButtons() {
       touchHandled = true;
       setTimeout(() => { touchHandled = false; }, 400);
     } else if (touchHandled) {
-      return; // skip click after touchend
+      return;
     }
     const v = VERSES[currentVerseIdx];
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -227,7 +327,6 @@ function bindVerseButtons() {
         .then(() => toast('📋 Versículo copiado'))
         .catch(() => toast('⚠️ No se pudo copiar'));
     } else {
-      // Fallback for mobile browsers without clipboard API
       const ta = document.createElement('textarea');
       ta.value = '\u201C' + v.text + '\u201D — ' + v.ref;
       ta.style.position = 'fixed';
@@ -246,7 +345,7 @@ function bindVerseButtons() {
       touchHandled = true;
       setTimeout(() => { touchHandled = false; }, 400);
     } else if (touchHandled) {
-      return; // skip click after touchend
+      return;
     }
     currentVerseIdx = (currentVerseIdx + 1) % VERSES.length;
     showVerse(currentVerseIdx);
@@ -290,19 +389,22 @@ function showEditorBosquejo(id = null) {
   const b = id ? bosquejos.find(x => x.id === id) : null;
   const title = $('editor-bosquejo-title');
   if (title) title.textContent = b ? 'Editar Bosquejo' : 'Nuevo Bosquejo';
+  
   const fields = ['b-titulo','b-objetivo','b-pasaje','b-intro','b-desarrollo','b-conclusion','b-reflexion'];
   const keys   = ['titulo','objetivo','pasaje','intro','desarrollo','conclusion','reflexion'];
+  
   fields.forEach((fid, i) => {
     const el = $(fid);
     if (el) el.value = b ? (b[keys[i]] || '') : '';
   });
-  const ed = $('editor-bosquejo');
-  if (ed) ed.classList.add('active');
+  
+  $('bosquejo-list-container').classList.add('hidden');
+  $('bosquejo-editor-container').classList.remove('hidden');
 }
 
 function closeEditorBosquejo() {
-  const ed = $('editor-bosquejo');
-  if (ed) ed.classList.remove('active');
+  $('bosquejo-list-container').classList.remove('hidden');
+  $('bosquejo-editor-container').classList.add('hidden');
 }
 
 function saveBosquejo() {
@@ -333,37 +435,53 @@ function saveBosquejo() {
 }
 
 function deleteBosquejo(id) {
-  bosquejos = bosquejos.filter(x => x.id !== id);
-  save(KEY_BOSQUEJOS, bosquejos);
-  renderBosquejos();
-  updateStats();
-  toast('🗑️ Bosquejo eliminado');
+  if (confirm('¿Estás seguro de que quieres eliminar este bosquejo?')) {
+    bosquejos = bosquejos.filter(x => x.id !== id);
+    save(KEY_BOSQUEJOS, bosquejos);
+    renderBosquejos();
+    updateStats();
+    toast('🗑️ Bosquejo eliminado');
+  }
 }
 
 function renderBosquejos() {
   const list = $('bosquejo-list');
   const empty = $('bosquejo-empty');
   if (!list) return;
+  
   const q = (($('search-bosquejos') || {}).value || '').toLowerCase().trim();
   list.querySelectorAll('.bosquejo-card').forEach(c => c.remove());
+  
   const filtered = bosquejos.filter(b =>
     !q || b.titulo.toLowerCase().includes(q) || (b.pasaje || '').toLowerCase().includes(q)
   );
+  
   if (empty) empty.style.display = filtered.length === 0 ? 'block' : 'none';
+  
   [...filtered].reverse().forEach(b => {
     const card = document.createElement('div');
-    card.className = 'bosquejo-card';
+    card.className = 'bosquejo-card group bg-surface-container-low rounded-xl p-5 hover:bg-surface-container transition-all cursor-pointer relative';
     card.innerHTML = `
-      <button class="delete-btn" title="Eliminar">✕</button>
-      <div class="bosquejo-card-title">${b.titulo}</div>
-      <div class="bosquejo-card-meta">
-        ${b.pasaje ? '<span>📖 ' + b.pasaje + '</span>' : ''}
-        <span>🗓 ${formatDate(b.updatedAt)}</span>
+      <div class="flex justify-between items-start">
+        <div>
+          <h4 class="font-headline text-md font-bold text-on-surface">${b.titulo}</h4>
+          <div class="flex items-center gap-3 mt-1.5 text-xs text-on-surface-variant font-label">
+            ${b.pasaje ? '<span class="flex items-center gap-1">📖 ' + b.pasaje + '</span>' : ''}
+            <span>🗓 ' + formatDate(b.updatedAt) + '</span>
+          </div>
+        </div>
+        <button class="delete-btn text-outline hover:text-error active:scale-90 transition-transform p-1 md:opacity-0 group-hover:opacity-100" title="Eliminar">
+          <span class="material-symbols-outlined text-lg">delete</span>
+        </button>
       </div>
     `;
-    card.onclick = e => { if (!e.target.closest('.delete-btn')) showEditorBosquejo(b.id); };
+    card.onclick = e => {
+      if (!e.target.closest('.delete-btn')) showEditorBosquejo(b.id);
+    };
     const del = card.querySelector('.delete-btn');
-    if (del) del.onclick = e => { e.stopPropagation(); deleteBosquejo(b.id); };
+    if (del) {
+      del.onclick = e => { e.stopPropagation(); deleteBosquejo(b.id); };
+    }
     list.insertBefore(card, empty);
   });
 }
@@ -374,18 +492,36 @@ function showEditorReflexion(id = null) {
   const r = id ? reflexiones.find(x => x.id === id) : null;
   const title = $('editor-reflexion-title');
   if (title) title.textContent = r ? 'Editar Reflexión' : 'Nueva Reflexión';
+  
   const rp = $('r-pasaje'), rc = $('r-contenido');
   if (rp) rp.value = r ? (r.pasaje || '') : '';
   if (rc) rc.value = r ? (r.contenido || '') : '';
+  
   reflColor = r ? (r.color || 'none') : 'none';
-  document.querySelectorAll('.color-dot').forEach(d => d.classList.toggle('active', d.dataset.color === reflColor));
-  const ed = $('editor-reflexion');
-  if (ed) ed.classList.add('active');
+  
+  document.querySelectorAll('#color-dots-container button').forEach(btn => {
+    const isAct = btn.dataset.color === reflColor;
+    btn.classList.toggle('border-primary', isAct);
+    btn.classList.toggle('border-transparent', !isAct);
+  });
+  
+  $('reflexion-list-container').classList.add('hidden');
+  $('reflexion-editor-container').classList.remove('hidden');
 }
 
 function closeEditorReflexion() {
-  const ed = $('editor-reflexion');
-  if (ed) ed.classList.remove('active');
+  $('reflexion-list-container').classList.remove('hidden');
+  $('reflexion-editor-container').classList.add('hidden');
+}
+
+function selectReflColor(el, color) {
+  reflColor = color;
+  document.querySelectorAll('#color-dots-container button').forEach(btn => {
+    btn.classList.remove('border-primary');
+    btn.classList.add('border-transparent');
+  });
+  el.classList.add('border-primary');
+  el.classList.remove('border-transparent');
 }
 
 function saveReflexion() {
@@ -412,47 +548,67 @@ function saveReflexion() {
 }
 
 function deleteReflexion(id) {
-  reflexiones = reflexiones.filter(x => x.id !== id);
-  save(KEY_REFLEXIONES, reflexiones);
-  renderReflexiones();
-  updateStats();
-  toast('🗑️ Reflexión eliminada');
-}
-
-function selectReflColor(el, color) {
-  reflColor = color;
-  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-  el.classList.add('active');
+  if (confirm('¿Deseas eliminar esta reflexión?')) {
+    reflexiones = reflexiones.filter(x => x.id !== id);
+    save(KEY_REFLEXIONES, reflexiones);
+    renderReflexiones();
+    updateStats();
+    toast('🗑️ Reflexión eliminada');
+  }
 }
 
 function renderReflexiones() {
   const list = $('reflexion-list');
   const empty = $('reflexion-empty');
   if (!list) return;
+  
   const q = (($('search-reflexiones') || {}).value || '').toLowerCase().trim();
-  list.querySelectorAll('.reflection-card').forEach(c => c.remove());
+  list.querySelectorAll('.reflection-card-item').forEach(c => c.remove());
+  
   const filtered = reflexiones.filter(r =>
     !q || r.contenido.toLowerCase().includes(q) || (r.pasaje || '').toLowerCase().includes(q)
   );
+  
   if (empty) empty.style.display = filtered.length === 0 ? 'block' : 'none';
+  
+  const bgColors = {
+    none: 'bg-surface-container-lowest',
+    yellow: 'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-300 dark:border-yellow-900',
+    green: 'bg-green-50 dark:bg-green-950/20 border-green-300 dark:border-green-900',
+    blue: 'bg-blue-50 dark:bg-blue-950/20 border-blue-300 dark:border-blue-900',
+    pink: 'bg-pink-50 dark:bg-pink-950/20 border-pink-300 dark:border-pink-900'
+  };
+  
   [...filtered].reverse().forEach(r => {
     const card = document.createElement('div');
-    card.className = 'reflection-card ' + (r.color !== 'none' ? 'dot-' + r.color : '');
-    card.style.borderLeft = r.color && r.color !== 'none' ? '' : '';
+    const borderClass = r.color && r.color !== 'none' ? 'border-l-4' : 'border border-outline-variant/10';
+    const bgClass = bgColors[r.color || 'none'] || 'bg-surface-container-lowest';
+    
+    card.className = `reflection-card-item p-5 rounded-xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-high relative group ${bgClass} ${borderClass}`;
     card.innerHTML = `
-      <button class="delete-btn" title="Eliminar" style="opacity:1;">✕</button>
-      ${r.pasaje ? '<div class="reflection-passage">📖 ' + r.pasaje + '</div>' : ''}
-      <div class="reflection-content">${r.contenido.replace(/\n/g,'<br>')}</div>
-      <div class="reflection-date">${formatDate(r.updatedAt)}</div>
+      <div class="flex justify-between items-start gap-4">
+        <div class="flex-1">
+          ${r.pasaje ? '<span class="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-1.5 block">📖 ' + r.pasaje + '</span>' : ''}
+          <p class="font-headline text-md text-on-surface leading-relaxed mb-3">${r.contenido.replace(/\n/g,'<br>')}</p>
+          <span class="font-label text-[9px] uppercase tracking-wider text-on-surface-variant">${formatDate(r.updatedAt)}</span>
+        </div>
+        <button class="delete-btn text-outline hover:text-error active:scale-90 transition-transform p-1 md:opacity-0 group-hover:opacity-100" title="Eliminar">
+          <span class="material-symbols-outlined text-lg">delete</span>
+        </button>
+      </div>
     `;
-    card.onclick = e => { if (!e.target.closest('.delete-btn')) showEditorReflexion(r.id); };
+    card.onclick = e => {
+      if (!e.target.closest('.delete-btn')) showEditorReflexion(r.id);
+    };
     const del = card.querySelector('.delete-btn');
-    if (del) del.onclick = e => { e.stopPropagation(); deleteReflexion(r.id); };
+    if (del) {
+      del.onclick = e => { e.stopPropagation(); deleteReflexion(r.id); };
+    }
     list.insertBefore(card, empty);
   });
 }
 
-// ── LECTOR ───────────────────────────────────────────────
+// ── LECTOR BÍBLICO ─────────────────────────────────────────
 function initLector() {
   const sel = $('sel-libro');
   if (!sel) return;
@@ -492,14 +648,13 @@ async function loadCapitulo() {
   const display = $('verse-display');
   if (!display) return;
   
-  // Show loading indicator
   display.innerHTML = `
     <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:14px; letter-spacing:.06em; text-transform:uppercase;">
       ${libro.n} — Capítulo ${lectorCapIdx}
     </div>
-    <div class="empty-state">
-      <div class="empty-state-icon">⏳</div>
-      <p>Cargando escrituras...</p>
+    <div class="empty-state text-center py-12 text-on-surface-variant flex flex-col items-center">
+      <span class="material-symbols-outlined text-4xl animate-spin text-primary mb-3">hourglass_empty</span>
+      <p>Cargando escrituras reales...</p>
     </div>
   `;
 
@@ -507,12 +662,17 @@ async function loadCapitulo() {
   const versos = await fetchCapituloTexto(libro.n, lectorCapIdx, versionVal);
   
   display.innerHTML = `
-    <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:14px; letter-spacing:.06em; text-transform:uppercase;">
+    <div class="font-label text-xs uppercase tracking-widest text-tertiary font-bold mb-3">
       ${libro.n} — Capítulo ${lectorCapIdx}
     </div>
-    <div class="verse-display-text">
-      ${versos.map(v => `<sup class="verse-num">${v.num}</sup>${v.text} `).join('')}
-    </div>
+    <article class="font-headline text-xl md:text-2xl leading-[1.8] space-y-6 text-justify" id="bible-text">
+      ${versos.map(v => `
+        <p class="relative pl-6">
+          <span class="font-label text-[10px] font-bold text-primary/50 absolute left-0 top-1.5 select-none">${v.num}</span>
+          ${v.text}
+        </p>
+      `).join('')}
+    </article>
   `;
 }
 
@@ -525,19 +685,99 @@ function navCapitulo(dir) {
   loadCapitulo();
 }
 
-// ── TEMA ──────────────────────────────────────────────────
+function setLectorToBook(idx) {
+  const selLibro = $('sel-libro');
+  if (selLibro) {
+    selLibro.value = idx;
+    onLibroChange();
+  }
+}
+
+// ── AJUSTES DE TEMA Y FUENTE ──────────────────────────────
+function setReadingTheme(mode) {
+  const body = document.body;
+  const canvas = $('reading-canvas');
+  if (!body || !canvas) return;
+  
+  document.documentElement.classList.remove('dark');
+  body.classList.remove('sepia-mode', 'dark-mode');
+  
+  const lightBtn = $('theme-btn-light');
+  const sepiaBtn = $('theme-btn-sepia');
+  const darkBtn = $('theme-btn-dark');
+  
+  [lightBtn, sepiaBtn, darkBtn].forEach(btn => {
+    if (btn) {
+      btn.classList.remove('border-primary', 'border-tertiary');
+      btn.classList.add('border-transparent');
+    }
+  });
+  
+  if (mode === 'dark') {
+    document.documentElement.classList.add('dark');
+    body.classList.add('dark-mode');
+    if (darkBtn) {
+      darkBtn.classList.remove('border-transparent');
+      darkBtn.classList.add('border-primary');
+    }
+  } else if (mode === 'sepia') {
+    body.classList.add('sepia-mode');
+    if (sepiaBtn) {
+      sepiaBtn.classList.remove('border-transparent');
+      sepiaBtn.classList.add('border-tertiary');
+    }
+  } else {
+    if (lightBtn) {
+      lightBtn.classList.remove('border-transparent');
+      lightBtn.classList.add('border-primary');
+    }
+  }
+}
+
+function updateFontSize(val) {
+  const textEl = $('bible-text');
+  if (textEl) {
+    textEl.style.fontSize = val + 'px';
+  }
+  const slider = $('font-slider');
+  if (slider) slider.value = val;
+}
+
+// Close settings panel when clicking outside
+window.addEventListener('click', function(e) {
+  const panel = $('settings-panel');
+  const settingsBtn = $('header-settings-btn');
+  if (panel && settingsBtn && panel.classList.contains('opacity-100')) {
+    if (!panel.contains(e.target) && !settingsBtn.contains(e.target) && !settingsBtn.parentElement.contains(e.target)) {
+      toggleSettings();
+    }
+  }
+});
+
+// ── TEMA GENERAL DE LA APP ────────────────────────────────
 function initTheme() {
-  const theme = load(KEY_THEME, 'dark');
-  document.documentElement.setAttribute('data-theme', theme);
-  const btn = $('btn-theme');
-  if (btn) btn.textContent = theme === 'dark' ? '🌙' : '☀️';
-  if (btn) btn.onclick = () => {
-    const cur = document.documentElement.getAttribute('data-theme');
-    const next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    btn.textContent = next === 'dark' ? '🌙' : '☀️';
-    save(KEY_THEME, next);
-  };
+  const theme = load(KEY_THEME, 'light');
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+    const btn = $('btn-theme');
+    if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-primary text-xl">light_mode</span>';
+  }
+  
+  const themeBtn = $('btn-theme');
+  if (themeBtn) {
+    themeBtn.onclick = () => {
+      const cur = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      if (next === 'dark') {
+        document.documentElement.classList.add('dark');
+        themeBtn.innerHTML = '<span class="material-symbols-outlined text-primary text-xl">light_mode</span>';
+      } else {
+        document.documentElement.classList.remove('dark');
+        themeBtn.innerHTML = '<span class="material-symbols-outlined text-primary text-xl">dark_mode</span>';
+      }
+      save(KEY_THEME, next);
+    };
+  }
 }
 
 // ── ZEN AUDIO ─────────────────────────────────────────────
@@ -559,111 +799,23 @@ function initAudio() {
   } catch {}
 }
 
-// ── ZEN MELODIES ──────────────────────────────────────────
 const MELODY_AMAZING_GRACE = [
-  { f: 261.63, d: 1 }, // C4
-  { f: 349.23, d: 2 }, // F4
-  { f: 440.00, d: 0.5 }, // A4
-  { f: 349.23, d: 0.5 }, // F4
-  { f: 440.00, d: 1 }, // A4
-  { f: 392.00, d: 2 }, // G4
-  { f: 349.23, d: 1 }, // F4
-  { f: 293.66, d: 2 }, // D4
-  { f: 261.63, d: 1 }, // C4
-  
-  { f: 261.63, d: 1 }, // C4
-  { f: 349.23, d: 2 }, // F4
-  { f: 440.00, d: 0.5 }, // A4
-  { f: 349.23, d: 0.5 }, // F4
-  { f: 440.00, d: 1 }, // A4
-  { f: 392.00, d: 1 }, // G4
-  { f: 523.25, d: 3 }, // C5
-  
-  { f: 440.00, d: 1 }, // A4
-  { f: 523.25, d: 2 }, // C5
-  { f: 440.00, d: 0.5 }, // A4
-  { f: 523.25, d: 0.5 }, // C5
-  { f: 440.00, d: 1 }, // A4
-  { f: 349.23, d: 2 }, // F4
-  { f: 261.63, d: 1 }, // C4
-  { f: 293.66, d: 2 }, // D4
-  { f: 261.63, d: 1 }, // C4
-  
-  { f: 261.63, d: 1 }, // C4
-  { f: 349.23, d: 2 }, // F4
-  { f: 440.00, d: 0.5 }, // A4
-  { f: 349.23, d: 0.5 }, // F4
-  { f: 440.00, d: 1 }, // A4
-  { f: 392.00, d: 2 }, // G4
-  { f: 349.23, d: 3 }, // F4
+  { f: 261.63, d: 1 }, { f: 349.23, d: 2 }, { f: 440.00, d: 0.5 }, { f: 349.23, d: 0.5 }, { f: 440.00, d: 1 }, { f: 392.00, d: 2 }, { f: 349.23, d: 1 }, { f: 293.66, d: 2 }, { f: 261.63, d: 1 },
+  { f: 261.63, d: 1 }, { f: 349.23, d: 2 }, { f: 440.00, d: 0.5 }, { f: 349.23, d: 0.5 }, { f: 440.00, d: 1 }, { f: 392.00, d: 1 }, { f: 523.25, d: 3 },
+  { f: 440.00, d: 1 }, { f: 523.25, d: 2 }, { f: 440.00, d: 0.5 }, { f: 523.25, d: 0.5 }, { f: 440.00, d: 1 }, { f: 349.23, d: 2 }, { f: 261.63, d: 1 }, { f: 293.66, d: 2 }, { f: 261.63, d: 1 },
+  { f: 261.63, d: 1 }, { f: 349.23, d: 2 }, { f: 440.00, d: 0.5 }, { f: 349.23, d: 0.5 }, { f: 440.00, d: 1 }, { f: 392.00, d: 2 }, { f: 349.23, d: 3 },
 ];
 
 const MELODY_TU_FIDELIDAD = [
-  { f: 392.00, d: 1 }, // G4
-  { f: 440.00, d: 1 }, // A4
-  { f: 493.88, d: 1.5 }, // B4
-  { f: 493.88, d: 0.5 }, // B4
-  { f: 440.00, d: 1 }, // A4
-  { f: 392.00, d: 1 }, // G4
-  { f: 440.00, d: 1.5 }, // A4
-  { f: 392.00, d: 0.5 }, // G4
-  { f: 349.23, d: 1 }, // F4
-  { f: 329.63, d: 2 }, // E4
-  
-  { f: 440.00, d: 1 }, // A4
-  { f: 493.88, d: 1 }, // B4
-  { f: 523.25, d: 1.5 }, // C5
-  { f: 523.25, d: 0.5 }, // C5
-  { f: 493.88, d: 1 }, // B4
-  { f: 440.00, d: 1 }, // A4
-  { f: 392.00, d: 1.5 }, // G4
-  { f: 349.23, d: 0.5 }, // F4
-  { f: 329.63, d: 1 }, // E4
-  { f: 293.66, d: 2 }, // D4
-  
-  { f: 392.00, d: 1 }, // G4
-  { f: 440.00, d: 1 }, // A4
-  { f: 493.88, d: 1.5 }, // B4
-  { f: 493.88, d: 0.5 }, // B4
-  { f: 523.25, d: 1 }, // C5
-  { f: 587.33, d: 1 }, // D5
-  { f: 523.25, d: 1 }, // C5
-  { f: 493.88, d: 1 }, // B4
-  { f: 440.00, d: 2 }, // A4
-  
-  { f: 587.33, d: 1 }, // D5
-  { f: 523.25, d: 1 }, // C5
-  { f: 493.88, d: 1 }, // B4
-  { f: 392.00, d: 1.5 }, // G4
-  { f: 440.00, d: 0.5 }, // A4
-  { f: 493.88, d: 1 }, // B4
-  { f: 440.00, d: 1.5 }, // A4
-  { f: 392.00, d: 0.5 }, // G4
-  { f: 369.99, d: 1 }, // F#4
-  { f: 392.00, d: 3 }, // G4
+  { f: 392.00, d: 1 }, { f: 440.00, d: 1 }, { f: 493.88, d: 1.5 }, { f: 493.88, d: 0.5 }, { f: 440.00, d: 1 }, { f: 392.00, d: 1 }, { f: 440.00, d: 1.5 }, { f: 392.00, d: 0.5 }, { f: 349.23, d: 1 }, { f: 329.63, d: 2 },
+  { f: 440.00, d: 1 }, { f: 493.88, d: 1 }, { f: 523.25, d: 1.5 }, { f: 523.25, d: 0.5 }, { f: 493.88, d: 1 }, { f: 440.00, d: 1 }, { f: 392.00, d: 1.5 }, { f: 349.23, d: 0.5 }, { f: 329.63, d: 1 }, { f: 293.66, d: 2 },
+  { f: 392.00, d: 1 }, { f: 440.00, d: 1 }, { f: 493.88, d: 1.5 }, { f: 493.88, d: 0.5 }, { f: 523.25, d: 1 }, { f: 587.33, d: 1 }, { f: 523.25, d: 1 }, { f: 493.88, d: 1 }, { f: 440.00, d: 2 },
+  { f: 587.33, d: 1 }, { f: 523.25, d: 1 }, { f: 493.88, d: 1 }, { f: 392.00, d: 1.5 }, { f: 440.00, d: 0.5 }, { f: 493.88, d: 1 }, { f: 440.00, d: 1.5 }, { f: 392.00, d: 0.5 }, { f: 369.99, d: 1 }, { f: 392.00, d: 3 },
 ];
 
 const MELODY_CUAN_GRANDE = [
-  { f: 261.63, d: 1 }, // C4
-  { f: 329.63, d: 1 }, // E4
-  { f: 392.00, d: 1.5 }, // G4
-  { f: 392.00, d: 0.5 }, // G4
-  { f: 440.00, d: 1 }, // A4
-  { f: 349.23, d: 1 }, // F4
-  { f: 440.00, d: 1.5 }, // A4
-  { f: 349.23, d: 0.5 }, // F4
-  { f: 392.00, d: 1 }, // G4
-  { f: 329.63, d: 2 }, // E4
-  
-  { f: 392.00, d: 1 }, // G4
-  { f: 523.25, d: 1.5 }, // C5
-  { f: 523.25, d: 0.5 }, // C5
-  { f: 493.88, d: 1 }, // B4
-  { f: 392.00, d: 1 }, // G4
-  { f: 440.00, d: 1.5 }, // A4
-  { f: 349.23, d: 0.5 }, // F4
-  { f: 293.66, d: 1 }, // D4
-  { f: 261.63, d: 3 }, // C4
+  { f: 261.63, d: 1 }, { f: 329.63, d: 1 }, { f: 392.00, d: 1.5 }, { f: 392.00, d: 0.5 }, { f: 440.00, d: 1 }, { f: 349.23, d: 1 }, { f: 440.00, d: 1.5 }, { f: 349.23, d: 0.5 }, { f: 392.00, d: 1 }, { f: 329.63, d: 2 },
+  { f: 392.00, d: 1 }, { f: 523.25, d: 1.5 }, { f: 523.25, d: 0.5 }, { f: 493.88, d: 1 }, { f: 392.00, d: 1 }, { f: 440.00, d: 1.5 }, { f: 349.23, d: 0.5 }, { f: 293.66, d: 1 }, { f: 261.63, d: 3 },
 ];
 
 let currentMelody = null;
@@ -756,7 +908,7 @@ function playMelodyNote() {
   
   synthesizePianoNote(note.f, 0.08);
   
-  const tempoDurationMs = 1100; // Tempo tranquilo
+  const tempoDurationMs = 1100;
   const delayTimeMs = note.d * tempoDurationMs;
   
   melodyNoteIdx = (melodyNoteIdx + 1) % currentMelody.length;
@@ -766,7 +918,6 @@ function playMelodyNote() {
 function playAmbientChords() {
   if (zenSound !== 'lluvia' || !zenPlaying || !audioCtx) return;
   
-  // Acordes pastorales en C / F / Am / G
   const chords = [
     [130.81, 164.81, 196.00], // C3, E3, G3
     [174.61, 220.00, 261.63], // F3, A3, C4
@@ -784,11 +935,42 @@ function playAmbientChords() {
   pianoTimer = setTimeout(playAmbientChords, 5500 + Math.random() * 3000);
 }
 
+function openZenDrawer() {
+  initAudio();
+  const drawer = $('zen-drawer-overlay');
+  const content = $('zen-drawer-content');
+  if (!drawer || !content) return;
+  
+  drawer.classList.remove('opacity-0', 'pointer-events-none');
+  drawer.classList.add('opacity-100', 'pointer-events-auto');
+  setTimeout(() => {
+    content.classList.remove('translate-y-full');
+    content.classList.add('translate-y-0');
+  }, 50);
+}
+
+function closeZenDrawer(e) {
+  const drawer = $('zen-drawer-overlay');
+  const content = $('zen-drawer-content');
+  if (!drawer || !content) return;
+  
+  if (e && e.target !== drawer && e.target.closest('#zen-drawer-content')) return;
+  
+  content.classList.add('translate-y-full');
+  content.classList.remove('translate-y-0');
+  drawer.classList.add('opacity-0', 'pointer-events-none');
+  drawer.classList.remove('opacity-100', 'pointer-events-auto');
+}
+
 function selectZenSound(el) {
   const sound = el.dataset.sound;
   zenSound = sound;
-  document.querySelectorAll('.zen-option').forEach(o => o.classList.remove('active'));
-  el.classList.add('active');
+  
+  document.querySelectorAll('#zen-drawer-content > div > div').forEach(o => {
+    o.className = "flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 cursor-pointer hover:bg-surface-container-low transition-colors";
+  });
+  el.className = "flex items-center gap-4 p-4 rounded-xl border border-primary bg-primary/5 cursor-pointer hover:bg-primary/10 transition-colors";
+  
   const names = {
     none: 'Silencio',
     sublime: 'Sublime Gracia 🎹',
@@ -796,55 +978,70 @@ function selectZenSound(el) {
     grande: 'Cuán Grande Es Él 🌟',
     lluvia: 'Lluvia de Oración 🌧️'
   };
+  
   const nameEl = $('zen-name');
   if (nameEl) {
     nameEl.textContent = names[sound];
-    nameEl.className = 'zen-name' + (sound !== 'none' ? ' playing-text' : '');
   }
+  
+  const bar = $('zen-bar');
   if (sound !== 'none') {
     zenPlaying = true;
-    const bar = $('zen-bar'); if (bar) bar.classList.add('playing');
-    const svg = $('zen-play-svg'); if (svg) svg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    if (bar) {
+      bar.classList.add('border-primary');
+      bar.classList.remove('border-outline-variant/20');
+    }
+    const playSvg = $('zen-play-svg');
+    if (playSvg) playSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
   } else {
     zenPlaying = false;
-    const bar = $('zen-bar'); if (bar) bar.classList.remove('playing');
-    const svg = $('zen-play-svg'); if (svg) svg.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    if (bar) {
+      bar.classList.remove('border-primary');
+      bar.classList.add('border-outline-variant/20');
+    }
+    const playSvg = $('zen-play-svg');
+    if (playSvg) playSvg.innerHTML = '<path d="M8 5v14l11-7z"/>';
   }
+  
   initAudio();
   playZen();
   closeZenDrawer();
   toast('🔊 ' + names[sound]);
 }
 
-function closeZenDrawer(e) {
-  if (e && e.target !== $('zen-drawer-overlay')) return;
-  const ov = $('zen-drawer-overlay');
-  if (ov) ov.classList.remove('open');
-}
-
 function bindZenButtons() {
   const btnSel  = $('btn-zen-select');
   const btnPlay = $('btn-zen-play');
-  if (btnSel) btnSel.onclick = () => {
-    initAudio();
-    const ov = $('zen-drawer-overlay');
-    if (ov) ov.classList.add('open');
-  };
-  if (btnPlay) btnPlay.onclick = () => {
-    initAudio();
-    if (zenSound === 'none') { const ov = $('zen-drawer-overlay'); if (ov) ov.classList.add('open'); return; }
-    zenPlaying = !zenPlaying;
-    const bar = $('zen-bar'), svg = $('zen-play-svg');
-    if (zenPlaying) {
-      if (bar) bar.classList.add('playing');
-      if (svg) svg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-      playZen(); toast('▶️ Reanudado');
-    } else {
-      if (bar) bar.classList.remove('playing');
-      if (svg) svg.innerHTML = '<path d="M8 5v14l11-7z"/>';
-      stopZen(); toast('⏸️ Pausado');
-    }
-  };
+  
+  if (btnSel) btnSel.onclick = openZenDrawer;
+  
+  if (btnPlay) {
+    btnPlay.onclick = () => {
+      initAudio();
+      if (zenSound === 'none') { openZenDrawer(); return; }
+      zenPlaying = !zenPlaying;
+      const bar = $('zen-bar');
+      const playSvg = $('zen-play-svg');
+      
+      if (zenPlaying) {
+        if (bar) {
+          bar.classList.add('border-primary');
+          bar.classList.remove('border-outline-variant/20');
+        }
+        if (playSvg) playSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        playZen();
+        toast('▶️ Reanudado');
+      } else {
+        if (bar) {
+          bar.classList.remove('border-primary');
+          bar.classList.add('border-outline-variant/20');
+        }
+        if (playSvg) playSvg.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        stopZen();
+        toast('⏸️ Pausado');
+      }
+    };
+  }
 }
 
 // ── ONLINE STATUS ─────────────────────────────────────────
@@ -853,10 +1050,10 @@ function updateOnlineStatus() {
   if (!el) return;
   if (navigator.onLine) {
     el.textContent = '● Iglesia Hosanna Sur';
-    el.style.color = 'var(--emerald-light)';
+    el.style.color = '';
   } else {
     el.textContent = '▲ Modo sin conexión';
-    el.style.color = 'var(--gold)';
+    el.style.color = '#c9a96e';
   }
 }
 
@@ -867,7 +1064,7 @@ function registerSW() {
   }
 }
 
-// ── VERSE MODAL STATE & LOGIC ─────────────────────────────
+// ── VERSE MODAL STATE & LOGIC (INSERTAR A BOSQUEJOS) ──────
 let lastBosquejoField = 'b-pasaje';
 let vmCurrentTestament = 'AT';
 let vmSelectedBookIdx = -1;
@@ -880,18 +1077,26 @@ function openVerseModal(fieldId = null) {
     lastBosquejoField = fieldId;
   }
   const ov = $('vm-overlay');
-  if (ov) ov.classList.add('open');
+  if (ov) {
+    ov.classList.remove('opacity-0', 'pointer-events-none');
+    ov.classList.add('opacity-100', 'pointer-events-auto');
+  }
   vmInitSelector();
 }
 
 function closeVerseModal() {
   const ov = $('vm-overlay');
-  if (ov) ov.classList.remove('open');
+  if (ov) {
+    ov.classList.add('opacity-0', 'pointer-events-none');
+    ov.classList.remove('opacity-100', 'pointer-events-auto');
+  }
 }
 
 function vmFilterTestament(btn) {
-  document.querySelectorAll('.vm-t-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.vm-t-btn').forEach(b => {
+    b.className = "vm-t-btn py-2 rounded-lg font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant/60";
+  });
+  btn.className = "vm-t-btn py-2 rounded-lg font-label text-xs font-bold uppercase tracking-wider text-primary bg-white shadow-sm";
   vmCurrentTestament = btn.dataset.t;
   vmInitSelector();
 }
@@ -971,9 +1176,9 @@ async function vmLoadVerses() {
   const list = $('vm-list');
   if (list) {
     list.innerHTML = `
-      <div class="empty-state" style="padding:30px 20px;">
-        <div class="empty-state-icon">⏳</div>
-        <p>Cargando versículos...</p>
+      <div class="empty-state text-center py-6 text-on-surface-variant flex flex-col items-center">
+        <span class="material-symbols-outlined text-3xl animate-spin text-primary mb-2">hourglass_empty</span>
+        <p class="text-xs">Cargando versículos...</p>
       </div>
     `;
   }
@@ -983,7 +1188,7 @@ async function vmLoadVerses() {
   vmCurrentVerses = await fetchCapituloTexto(libroName, vmSelectedCap, versionVal);
   
   const rangeBar = $('vm-range-bar');
-  if (rangeBar) rangeBar.style.display = 'flex';
+  if (rangeBar) rangeBar.classList.remove('hidden');
   
   const fromInput = $('vm-range-from');
   const toInput = $('vm-range-to');
@@ -999,13 +1204,12 @@ function vmUpdateVerseList() {
   
   if (vmSelectedBookIdx < 0 || vmCurrentVerses.length === 0) {
     list.innerHTML = `
-      <div class="empty-state" style="padding:30px 20px;">
-        <div class="empty-state-icon">📖</div>
-        <p>Selecciona un libro y capítulo<br>para ver los versículos.</p>
+      <div class="empty-state text-center py-6 text-on-surface-variant">
+        <p>Selecciona un libro y capítulo para ver los versículos.</p>
       </div>
     `;
     const rangeBar = $('vm-range-bar');
-    if (rangeBar) rangeBar.style.display = 'none';
+    if (rangeBar) rangeBar.classList.add('hidden');
     vmUpdatePreview();
     return;
   }
@@ -1015,15 +1219,20 @@ function vmUpdateVerseList() {
   vmCurrentVerses.forEach(v => {
     const isSelected = vmSelectedVerses.includes(v.num);
     const row = document.createElement('div');
-    row.className = 'vm-verse-row' + (isSelected ? ' selected' : '');
+    row.className = 'flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ' + 
+                    (isSelected ? 'border-primary bg-primary/5 text-primary' : 'border-outline-variant/15 hover:bg-surface-container-low text-on-surface');
     row.onclick = () => vmToggleVerse(v.num);
     
     const cleanText = v.text.replace(/\s*\([^)]+\)\s*$/, '');
     
     row.innerHTML = `
-      <div class="vm-verse-num">${v.num}</div>
-      <div class="vm-verse-text">${cleanText}</div>
-      <div class="vm-verse-check">${isSelected ? '☑' : '☐'}</div>
+      <div class="flex items-start gap-3 flex-1">
+        <span class="font-label text-[10px] font-bold text-primary bg-primary-fixed/20 rounded px-1.5 py-0.5 mt-0.5">${v.num}</span>
+        <p class="font-body text-sm leading-relaxed">${cleanText}</p>
+      </div>
+      <span class="material-symbols-outlined text-lg ml-3">
+        ${isSelected ? 'check_box' : 'check_box_outline_blank'}
+      </span>
     `;
     list.appendChild(row);
   });
@@ -1041,14 +1250,18 @@ function vmToggleVerse(num) {
   
   const list = $('vm-list');
   if (list) {
-    const rows = list.querySelectorAll('.vm-verse-row');
+    const rows = list.children;
     vmCurrentVerses.forEach((v, i) => {
       const row = rows[i];
       if (row) {
         const isSel = vmSelectedVerses.includes(v.num);
-        row.classList.toggle('selected', isSel);
-        const check = row.querySelector('.vm-verse-check');
-        if (check) check.textContent = isSel ? '☑' : '☐';
+        row.className = 'flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ' + 
+                        (isSel ? 'border-primary bg-primary/5 text-primary' : 'border-outline-variant/15 hover:bg-surface-container-low text-on-surface');
+        
+        const check = row.querySelector('.material-symbols-outlined');
+        if (check) {
+          check.textContent = isSel ? 'check_box' : 'check_box_outline_blank';
+        }
       }
     });
   }
@@ -1073,38 +1286,13 @@ function vmApplyRange() {
     vmSelectedVerses.push(i);
   }
   
-  const list = $('vm-list');
-  if (list) {
-    const rows = list.querySelectorAll('.vm-verse-row');
-    vmCurrentVerses.forEach((v, i) => {
-      const row = rows[i];
-      if (row) {
-        const isSel = vmSelectedVerses.includes(v.num);
-        row.classList.toggle('selected', isSel);
-        const check = row.querySelector('.vm-verse-check');
-        if (check) check.textContent = isSel ? '☑' : '☐';
-      }
-    });
-  }
-  
-  vmUpdatePreview();
+  vmUpdateVerseList();
   toast(`📏 Rango aplicado: v. ${min} al ${max}`);
 }
 
 function vmClearAll() {
   vmSelectedVerses = [];
-  
-  const list = $('vm-list');
-  if (list) {
-    const rows = list.querySelectorAll('.vm-verse-row');
-    rows.forEach(row => {
-      row.classList.remove('selected');
-      const check = row.querySelector('.vm-verse-check');
-      if (check) check.textContent = '☐';
-    });
-  }
-  
-  vmUpdatePreview();
+  vmUpdateVerseList();
 }
 
 function formatVerseRanges(arr) {
@@ -1170,7 +1358,7 @@ function vmCopy() {
   const combined = `${ref} — "${texts.join(' / ')}"`;
   
   navigator.clipboard.writeText(combined)
-    .then(() => toast('📋 Versículos copiados'))
+    .then(() => { toast('📋 Versículos copiados'); closeVerseModal(); })
     .catch(() => toast('⚠️ Error al copiar'));
 }
 
@@ -1244,13 +1432,17 @@ function startApp() {
     initLector();
     updateStats();
     updateOnlineStatus();
+    updateGreeting();
+    
+    // Set default active tab
+    switchTab('tab-inicio');
+    
     window.addEventListener('online',  updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
     registerSW();
-    console.log('✅ Biblia App iniciada correctamente');
+    console.log('✅ Biblia App (Alexandria - Hosanna Sur) iniciada correctamente');
   } catch(e) {
     console.error('❌ Error en init:', e);
-    // Show error visually on mobile for debugging
     const vt = document.getElementById('verse-text');
     if (vt) vt.textContent = 'Error al iniciar: ' + e.message;
   }

@@ -1,8 +1,7 @@
-const CACHE_NAME = 'biblia-app-v6';
+const CACHE_NAME = 'biblia-app-v7';
 const ASSETS = [
   './',
   './index.html',
-  './style.css',
   './app.js',
   './manifest.json',
   './icon.svg',
