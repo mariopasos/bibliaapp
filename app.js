@@ -92,8 +92,12 @@ async function fetchCapituloTexto(libroName, cap, versionVal) {
   const apiBook = getApiBookName(libroName);
   const url = `https://bible-api.deno.dev/api/read/${apiVersion}/${apiBook}/${cap}`;
   
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 2500);
+  
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
     if (!res.ok) throw new Error('API response error');
     const data = await res.json();
     if (data && data.vers && Array.isArray(data.vers)) {
@@ -103,6 +107,7 @@ async function fetchCapituloTexto(libroName, cap, versionVal) {
       }));
     }
   } catch (err) {
+    clearTimeout(timeoutId);
     console.warn('Fallback to mock verses due to:', err);
   }
   
@@ -618,6 +623,11 @@ function initLector() {
     opt.textContent = l.n;
     sel.appendChild(opt);
   });
+  
+  // Pre-select Genesis (index 0) and trigger change to load chapter 1 by default
+  sel.value = "0";
+  lectorLibroIdx = 0;
+  onLibroChange();
 }
 
 function onLibroChange() {
