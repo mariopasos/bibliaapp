@@ -1,4 +1,4 @@
-const CACHE_NAME = 'biblia-app-v7';
+const CACHE_NAME = 'biblia-app-v8';
 const ASSETS = [
   './',
   './index.html',
@@ -26,6 +26,9 @@ self.addEventListener('activate', e => {
 
 // Network-first strategy: try network, fall back to cache
 self.addEventListener('fetch', e => {
+  // Only handle HTTP/HTTPS requests (ignore browser extensions, chrome-extension, etc.)
+  if (!e.request.url.startsWith('http')) return;
+
   e.respondWith(
     fetch(e.request)
       .then(response => {
@@ -40,7 +43,17 @@ self.addEventListener('fetch', e => {
       })
       .catch(() => {
         // Network failed, try cache
-        return caches.match(e.request).then(cached => cached || caches.match('./index.html'));
+        return caches.match(e.request, { ignoreSearch: true }).then(cached => {
+          if (cached) return cached;
+          
+          // Only return index.html for navigation requests (HTML pages)
+          if (e.request.mode === 'navigate' || (e.request.headers.get('accept') && e.request.headers.get('accept').includes('text/html'))) {
+            return caches.match('./index.html');
+          }
+          
+          // Return a 404 for missing assets when offline, avoiding serving index.html as JS/CSS
+          return new Response('Not found', { status: 404, statusText: 'Not Found' });
+        });
       })
   );
 });

@@ -467,7 +467,7 @@ function renderBosquejos() {
           <h4 class="font-headline text-md font-bold text-on-surface">${b.titulo}</h4>
           <div class="flex items-center gap-3 mt-1.5 text-xs text-on-surface-variant font-label">
             ${b.pasaje ? '<span class="flex items-center gap-1">📖 ' + b.pasaje + '</span>' : ''}
-            <span>🗓 ' + formatDate(b.updatedAt) + '</span>
+            <span>🗓 ${formatDate(b.updatedAt)}</span>
           </div>
         </div>
         <button class="delete-btn text-outline hover:text-error active:scale-90 transition-transform p-1 md:opacity-0 group-hover:opacity-100" title="Eliminar">
@@ -1440,7 +1440,7 @@ function startApp() {
     window.addEventListener('online',  updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
     registerSW();
-    console.log('✅ Biblia App (Alexandria - Hosanna Sur) iniciada correctamente');
+    console.log('✅ Biblia App (Iglesia Hosanna Sur) iniciada correctamente');
   } catch(e) {
     console.error('❌ Error en init:', e);
     const vt = document.getElementById('verse-text');
