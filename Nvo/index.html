@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Inter:wght@400;500;600&amp;family=Public Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container-low": "#f5f3f4",
+                "on-tertiary-container": "#4a3f00",
+                "on-primary-fixed": "#001946",
+                "on-primary": "#ffffff",
+                "outline": "#737784",
+                "inverse-primary": "#b1c5ff",
+                "surface-container": "#efedee",
+                "on-error": "#ffffff",
+                "surface-tint": "#2259bf",
+                "on-secondary-fixed": "#171c20",
+                "outline-variant": "#c3c6d5",
+                "on-tertiary-fixed": "#211b00",
+                "primary-fixed-dim": "#b1c5ff",
+                "surface-dim": "#dbdadb",
+                "secondary-container": "#dfe3e8",
+                "error": "#ba1a1a",
+                "tertiary-fixed": "#f9e37a",
+                "on-secondary-container": "#606569",
+                "background": "#faf9fa",
+                "on-secondary": "#ffffff",
+                "on-background": "#1b1c1d",
+                "tertiary-container": "#bfab49",
+                "on-secondary-fixed-variant": "#42474b",
+                "on-surface": "#1b1c1d",
+                "surface-container-lowest": "#ffffff",
+                "surface": "#faf9fa",
+                "tertiary": "#6d5e00",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed": "#dfe3e8",
+                "surface-container-high": "#e9e8e9",
+                "tertiary-fixed-dim": "#dcc661",
+                "inverse-surface": "#303031",
+                "error-container": "#ffdad6",
+                "surface-variant": "#e3e2e3",
+                "secondary": "#5a5f63",
+                "inverse-on-surface": "#f2f0f1",
+                "on-error-container": "#93000a",
+                "surface-container-highest": "#e3e2e3",
+                "surface-bright": "#faf9fa",
+                "secondary-fixed-dim": "#c2c7cc",
+                "primary-container": "#3366cc",
+                "primary-fixed": "#d9e2ff",
+                "primary": "#094cb2",
+                "on-primary-container": "#e7ebff",
+                "on-tertiary-fixed-variant": "#524600",
+                "on-primary-fixed-variant": "#00419d",
+                "on-surface-variant": "#434653"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "fontFamily": {
+                "headline": ["Noto Serif"],
+                "display": ["Noto Serif"],
+                "body": ["Inter"],
+                "label": ["Public Sans"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; }
+      .font-headline { font-family: 'Noto Serif', serif; }
+      .font-label { font-family: 'Public Sans', sans-serif; }
+      .glass { backdrop-filter: blur(20px); background-color: rgba(255, 255, 255, 0.8); }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      .gradient-primary { background: linear-gradient(135deg, #094cb2, #3366cc); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface-container-lowest flex justify-between items-center px-6 py-4">
+<div class="cursor-pointer active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-primary">menu</span>
+</div>
+<h1 class="font-headline text-2xl font-bold text-primary tracking-tighter">BibliaApp</h1>
+<div class="cursor-pointer active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-primary">settings</span>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-6 pt-8 space-y-10">
+<!-- Saludo -->
+<section>
+<h2 class="font-headline text-4xl font-bold text-on-surface tracking-tight">Buenas tardes, Avery</h2>
+<p class="font-label text-on-surface-variant mt-1 text-sm tracking-widest uppercase">Jueves, 24 de Octubre</p>
+</section>
+<!-- Versículo del Día -->
+<section class="relative overflow-hidden rounded-xl bg-surface-container-low p-8 md:p-12">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<div class="relative z-10 max-w-2xl">
+<span class="font-label text-tertiary font-semibold tracking-wider text-xs uppercase mb-4 block">Versículo del día</span>
+<blockquote class="font-headline text-2xl md:text-3xl italic leading-relaxed text-on-surface mb-6">
+                    "Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal, para daros el fin que esperáis."
+                </blockquote>
+<cite class="font-label text-on-surface-variant not-italic font-bold tracking-widest">— JEREMÍAS 29:11</cite>
+<div class="flex gap-4 mt-8">
+<button class="flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-sm">share</span>
+<span class="font-label text-xs font-bold uppercase tracking-widest">Compartir</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-sm">bookmark</span>
+<span class="font-label text-xs font-bold uppercase tracking-widest">Guardar</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Progreso de Lectura -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-tertiary">auto_stories</span>
+<h3 class="font-headline text-xl font-bold">365 Días de Viaje</h3>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mb-2">
+<div class="bg-primary h-1.5 rounded-full" style="width: 42%"></div>
+</div>
+<p class="font-label text-xs text-on-surface-variant tracking-wide">Has completado el 42% de tu plan anual</p>
+</div>
+<button class="gradient-primary text-on-primary px-8 py-3 rounded-full font-label text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
+                    Continuar Lectura
+                </button>
+</div>
+</section>
+<!-- Biblioteca Bento Grid -->
+<section class="space-y-6">
+<h3 class="font-headline text-2xl font-bold">Biblioteca</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="group relative overflow-hidden h-48 rounded-xl cursor-pointer">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Close-up of ancient parchment paper and calligraphy pens in a soft golden hour lighting, reflecting a scholarly and archival atmosphere. The composition is minimalist and premium, using earthy tones and high-end editorial textures typical of a classical library setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCRGWZna3b3O5GcVzUCiRlCDHC6fdfVHDPsesfY0FetBBB1VJtBt6NCHDqYBYWq5HAzC2Oe4R04M7pJ-p2vgy8p0s66Hg-k_K68xoWuIsQSap2We4gvhx929GH9dy8c_qmCw-Iy3ac_N-vLc_-JRemiSjGYQjQhhcIUAlD1oupkM7CXNKjCc1p6H2NoQlY8iq6GDkWg5Jy3i-q48MweXN1OAjL4KHrhzVzf_5Mfv3XDLE6B_AFut4SeGMx0YKI0iToM6QYS0PZ0kVJ">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<p class="text-white font-headline text-xl font-bold">Antiguo Testamento</p>
+</div>
+</div>
+<div class="group relative overflow-hidden h-48 rounded-xl cursor-pointer">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A modern minimalist stained glass window casting soft blue and primary blue light onto a clean white marble wall. The aesthetic is contemporary but reverent, featuring high-contrast lighting and a sophisticated architectural feel that complements a high-end editorial digital experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDmDynnPR0O40gsyoPBOmnZlLaGEb8-Ksrx07g2aUZGr47Wkm6WyF3lqrrPiGMqIN-e3S7rasC_xSQoRjn6Ts1cb1Qem-mFcdm04LjYzSwD3hXeAAkmLZVlPerZJ_lz_hTxarISV9-nzrqrW-Ps1vWEJ_tc6_1FFaJ4YFYPSUMJFNRmwls6QwwqOYI0o-FF0JfEoe-6RmoCrA0zw4UBoh9I5m7tFeRMeYGnpyV_gjYAxarpLlBTOQV4xUgA3MgT0D4kc7oKum_M_Lz">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<p class="text-white font-headline text-xl font-bold">Nuevo Testamento</p>
+</div>
+</div>
+<div class="group relative overflow-hidden h-48 rounded-xl cursor-pointer">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A serene morning sunrise over a tranquil lake with morning mist rising, creating a mood of reflection and daily devotion. The lighting is ethereal and soft with golden and pale blue hues, adhering to a high-end editorial aesthetic that feels both archival and fresh." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxZ7qX9AFk9fT7ODOVY6-np2x8_raFx3hfwBLjaOF4DjFTaZDp3XsBGeUldHOnafIoaHejn4D6YtEjQ9nDA4i0fsUrtHOOHPQ9NYxhvN8xoZgSCa_rKXYQ3UANcQWkI2S-ARKWN6vYx3DqCzHTihQamku7ZPRRKAuC7XLiFJM2rJMPXrr-ubKzHVyrgj5mQOmMZDrLtD2Z4n7daiOroFqJM4ClF6GP5t9f_2EGueakyFiNWaxwEuRqh8YsPI6etjQ2Xdw6-iaIPMXL">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6">
+<p class="text-white font-headline text-xl font-bold">Devocionales Diarios</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Lecturas Recientes -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline text-2xl font-bold">Lecturas Recientes</h3>
+<button class="font-label text-xs font-bold text-primary uppercase tracking-widest">Ver todo</button>
+</div>
+<div class="flex gap-6 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
+<!-- Book 1 -->
+<div class="flex-none w-40 group cursor-pointer">
+<div class="aspect-[2/3] bg-surface-container-high rounded-lg overflow-hidden shadow-md mb-3 transition-transform duration-300 group-hover:-translate-y-2">
+<img class="w-full h-full object-cover" data-alt="A classic book cover with elegant serif typography reading Proverbios, set against a dark archival blue background with gold leaf accents. The style is premium editorial, resembling a high-end theological publication with deep textures and sophisticated lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyl_hSSFuPHWtrFicvtYKO_olXFPgbd7gD3cbvENHT0eRuxFjjhCO_gtLz7_AfzcUcvzV1Tb_aJcuzmFxXw4wyypSMwG4KX0Ew953sReShabFF5-w0AeTz9bzV1s9UYcHNLtF3ypEW9Z8ZhM6dxkpB_1Ndxp6643bZNS0VSeIBzJsLGGRcukMqSQ_G80riBPlJa2Oxd5HToqWKiYvqV0qQq-u5nZ0hzuLyTPUalIVqws1e18H5od2IhXNUsjGKUwcTykPGo1DNjJqg">
+</div>
+<p class="font-headline text-lg font-bold">Proverbios</p>
+<p class="font-label text-[10px] uppercase text-on-surface-variant tracking-widest">Capítulo 12</p>
+</div>
+<!-- Book 2 -->
+<div class="flex-none w-40 group cursor-pointer">
+<div class="aspect-[2/3] bg-surface-container-high rounded-lg overflow-hidden shadow-md mb-3 transition-transform duration-300 group-hover:-translate-y-2">
+<img class="w-full h-full object-cover" data-alt="An artistic representation of musical notes transforming into divine light, symbolizing the book of Psalms. The color palette uses scholarly gold and deep indigo, with a high-end editorial feel and generous whitespace in the composition to imply a digital curator style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO99keDkSr6wna8hRdCXxs7iKzQzbGYv7IeYjy2gaBzPfXsCDv7LvGQ3FmrbDYMJH3LKA_sspEzsHfwPhniB_e-2y07MHb4Msc8gJAO9JlJxWtuYhZvd9pfPIdb5BDzLBneJcKCcfUQmxif_okqStwt4OiVpgABpbkGPiIv6Xil8ITXJdNl9mI6qaxS3UZW6NnVmZyJFvSpFQ30-TwKPWGOz6zOj99dutM71xfp5zEaIcKBiC8jekmo4przxrWgPxwRqFw59I__Ruj">
+</div>
+<p class="font-headline text-lg font-bold">Salmos</p>
+<p class="font-label text-[10px] uppercase text-on-surface-variant tracking-widest">Capítulo 23</p>
+</div>
+<!-- Book 3 -->
+<div class="flex-none w-40 group cursor-pointer">
+<div class="aspect-[2/3] bg-surface-container-high rounded-lg overflow-hidden shadow-md mb-3 transition-transform duration-300 group-hover:-translate-y-2">
+<img class="w-full h-full object-cover" data-alt="A minimalist and authoritative book cover for Genesis, featuring a subtle gradient from deep cosmic black to a soft primary blue glow. The typography is a refined Noto Serif, embodying a scholarly and premium aesthetic suitable for a modern reading experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV7uzzqgi0NLJd0Zn-B8mNEMgMOgPCeIq2tUttAn-PAKNBbCD46c-coge_OdjC18cpQbASNwE6cd5hfdJkrCwGFwZurmX2gMT-UhgiFYll37ui9bnBmMOOqhtFXkSUXzzAEiJmslcTEK7EDP4SQsQ_GQuyfr9rqaYCXcQ-MyWu5Ea0snae615jTuXAW4Nok__aRaUSGcUcGGrL56Gk-PMrrBvRsthqFAqPGYadYmPCR60bN3zD2qGYBZbjrlFMgG-Jq4jIHyLPMiJL">
+</div>
+<p class="font-headline text-lg font-bold">Génesis</p>
+<p class="font-label text-[10px] uppercase text-on-surface-variant tracking-widest">Capítulo 1</p>
+</div>
+<!-- Book 4 -->
+<div class="flex-none w-40 group cursor-pointer opacity-50">
+<div class="aspect-[2/3] bg-surface-container-high rounded-lg overflow-hidden shadow-md mb-3 transition-transform duration-300 group-hover:-translate-y-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant">add</span>
+</div>
+<p class="font-headline text-lg font-bold">Explorar</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-3"><div class="flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition-transform duration-200 text-on-surface-variant/60 hover:text-primary transition-all">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Libros</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition-transform duration-200 text-on-surface-variant/60 hover:text-primary transition-all">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Bosquejos</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition-transform duration-200 text-on-surface-variant/60 hover:text-primary transition-all">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Reflexiones</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition-transform duration-200 text-on-surface-variant/60 hover:text-primary transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Perfil</span>
+</div></nav>
+<!-- Floating Action Button - Contextual for Home -->
+<button class="fixed right-6 bottom-28 w-14 h-14 gradient-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<script>
+        // Simple interaction for bookmarking/sharing
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const label = btn.querySelector('.font-label');
+                if (label) {
+                    const originalText = label.innerText;
+                    label.innerText = '¡LISTO!';
+                    setTimeout(() => {
+                        label.innerText = originalText;
+                    }, 1500);
+                }
+            });
+        });
+
+        // Add subtle parallax effect on scroll for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+
+
+</body></html>

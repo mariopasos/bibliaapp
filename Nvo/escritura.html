@@ -1,0 +1,266 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Inter:wght@400;500&amp;family=Public+Sans:wght@300;400;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sepia-mode {
+            background-color: #f4ecd8 !important;
+            color: #433422 !important;
+        }
+        .sepia-mode .surface-container-lowest { background-color: #fcf5e5 !important; }
+        .sepia-mode .text-on-surface-variant { color: #5f4b32 !important; }
+        
+        .dark-mode {
+            background-color: #1b1c1d !important;
+            color: #e3e2e3 !important;
+        }
+        
+        #font-slider::-webkit-slider-runnable-track {
+            background: #dfe3e8;
+            height: 4px;
+            border-radius: 2px;
+        }
+        #font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #094cb2;
+            margin-top: -7px;
+            cursor: pointer;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-low": "#f5f3f4",
+                        "on-tertiary-container": "#4a3f00",
+                        "on-primary-fixed": "#001946",
+                        "on-primary": "#ffffff",
+                        "outline": "#737784",
+                        "inverse-primary": "#b1c5ff",
+                        "surface-container": "#efedee",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#2259bf",
+                        "on-secondary-fixed": "#171c20",
+                        "outline-variant": "#c3c6d5",
+                        "on-tertiary-fixed": "#211b00",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "surface-dim": "#dbdadb",
+                        "secondary-container": "#dfe3e8",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#f9e37a",
+                        "on-secondary-container": "#606569",
+                        "background": "#faf9fa",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1b1c1d",
+                        "tertiary-container": "#bfab49",
+                        "on-secondary-fixed-variant": "#42474b",
+                        "on-surface": "#1b1c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#faf9fa",
+                        "tertiary": "#6d5e00",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dfe3e8",
+                        "surface-container-high": "#e9e8e9",
+                        "tertiary-fixed-dim": "#dcc661",
+                        "inverse-surface": "#303031",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e3e2e3",
+                        "secondary": "#5a5f63",
+                        "inverse-on-surface": "#f2f0f1",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e3e2e3",
+                        "surface-bright": "#faf9fa",
+                        "secondary-fixed-dim": "#c2c7cc",
+                        "primary-container": "#3366cc",
+                        "primary-fixed": "#d9e2ff",
+                        "primary": "#094cb2",
+                        "on-primary-container": "#e7ebff",
+                        "on-tertiary-fixed-variant": "#524600",
+                        "on-primary-fixed-variant": "#00419d",
+                        "on-surface-variant": "#434653"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    fontFamily: {
+                        "headline": ["Noto Serif"],
+                        "display": ["Noto Serif"],
+                        "body": ["Inter"],
+                        "label": ["Public Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest dark:bg-surface-dim text-primary dark:text-primary-fixed-dim font-headline text-headline-sm tracking-tight leading-relaxed w-full top-0 sticky z-40 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="cursor-pointer active:opacity-70 transition-opacity flex items-center">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline text-2xl font-bold tracking-tighter">BibliaApp</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant hidden md:block">Reina-Valera 1960</span>
+<button class="cursor-pointer active:opacity-70 transition-opacity flex items-center" onclick="toggleSettings()">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<main class="max-w-3xl mx-auto px-6 pt-12 pb-32 min-h-screen transition-all duration-500" id="reading-canvas">
+<!-- Reader Context Info -->
+<div class="mb-16 text-center">
+<p class="font-label text-sm uppercase tracking-[0.2em] text-tertiary mb-2">Salmos</p>
+<h2 class="font-display text-5xl md:text-6xl font-bold text-on-surface leading-tight">Capítulo 23</h2>
+<div class="mt-6 w-12 h-1 bg-primary/20 mx-auto rounded-full"></div>
+</div>
+<!-- Biblical Text -->
+<article class="font-headline text-xl md:text-2xl leading-[1.8] space-y-8 text-justify" id="bible-text">
+<p class="">
+<span class="font-label text-xs align-top mr-2 text-primary opacity-60">1</span>
+                Jehová es mi pastor; nada me faltará.
+            </p>
+<p class="">
+<span class="font-label text-xs align-top mr-2 text-primary opacity-60">2</span>
+                En lugares de delicados pastos me hará descansar; junto a aguas de reposo me pastoreará.
+            </p>
+<p class="">
+<span class="font-label text-xs align-top mr-2 text-primary opacity-60">3</span>
+                Confortará mi alma; me guiará por sendas de justicia por amor de su nombre.
+            </p>
+<p class="">
+<span class="font-label text-xs align-top mr-2 text-primary opacity-60">4</span>
+                Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo; tu vara y tu cayado me infundirán aliento.
+            </p>
+<p class="">
+<span class="font-label text-xs align-top mr-2 text-primary opacity-60">5</span>
+                Aderezas mesa delante de mí en presencia de mis angustiadores; unges mi cabeza con aceite; mi copa está rebosando.
+            </p>
+<p class="">
+<span class="font-label text-xs align-top mr-2 text-primary opacity-60">6</span>
+                Ciertamente el bien y la misericordia me seguirán todos los días de mi vida, y en la casa de Jehová moraré por largos días.
+            </p>
+</article>
+<!-- Chapter Navigation -->
+<nav class="mt-20 flex justify-between items-center border-t border-outline-variant/20 pt-10">
+<button class="flex flex-col items-start gap-1 group">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">Anterior</span>
+<div class="flex items-center gap-2 text-on-surface font-headline font-semibold">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+                    Salmo 22
+                </div>
+</button>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<button class="flex flex-col items-end gap-1 group text-right">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">Siguiente</span>
+<div class="flex items-center gap-2 text-on-surface font-headline font-semibold">
+                    Salmo 24
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</button>
+</nav>
+</main>
+<!-- Reading Controls Modal (Alexandria Glassmorphism) -->
+<div class="fixed inset-0 z-50 flex items-end justify-center px-4 pb-24 pointer-events-none opacity-0 transition-opacity duration-300" id="settings-panel">
+<div class="bg-surface-container-lowest/90 backdrop-blur-2xl w-full max-w-lg rounded-2xl p-6 shadow-2xl pointer-events-auto border border-white/20">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-label text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Ajustes de Lectura</h3>
+<button class="text-on-surface-variant hover:text-primary" onclick="toggleSettings()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Theme Options -->
+<div class="grid grid-cols-3 gap-3 mb-8">
+<button class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border border-outline-variant hover:border-primary transition-all" onclick="setTheme('light')">
+<div class="w-8 h-8 rounded-full bg-white border border-outline-variant"></div>
+<span class="font-label text-[10px] uppercase font-bold text-on-surface">Claro</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 rounded-xl bg-[#f4ecd8] border border-transparent hover:border-tertiary transition-all" onclick="setTheme('sepia')">
+<div class="w-8 h-8 rounded-full bg-[#f4ecd8] border border-stone-300"></div>
+<span class="font-label text-[10px] uppercase font-bold text-[#433422]">Sepia</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 rounded-xl bg-slate-900 border border-transparent hover:border-primary transition-all" onclick="setTheme('dark')">
+<div class="w-8 h-8 rounded-full bg-slate-800"></div>
+<span class="font-label text-[10px] uppercase font-bold text-slate-100">Noche</span>
+</button>
+</div>
+<!-- Font Size Slider -->
+<div class="space-y-4">
+<div class="flex justify-between items-center px-1">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">text_fields</span>
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">text_fields</span>
+</div>
+<input class="w-full h-1 bg-secondary-container rounded-lg appearance-none cursor-pointer accent-primary" id="font-slider" max="42" min="16" oninput="updateFontSize(this.value)" step="2" type="range" value="24">
+</div>
+</div>
+</div>
+<!-- Bottom Navigation (Fixed) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/80 dark:bg-surface-dim/80 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-3 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]"><button class="flex flex-col items-center gap-1 group text-on-surface-variant/60 hover:text-primary transition-all"><span class="material-symbols-outlined">menu_book</span><span class="font-label text-[10px] uppercase tracking-widest">Libros</span></button><button class="flex flex-col items-center gap-1 group text-on-surface-variant/60 hover:text-primary transition-all"><span class="material-symbols-outlined">edit_note</span><span class="font-label text-[10px] uppercase tracking-widest">Bosquejos</span></button><button class="flex flex-col items-center gap-1 group text-on-surface-variant/60 hover:text-primary transition-all"><span class="material-symbols-outlined">history_edu</span><span class="font-label text-[10px] uppercase tracking-widest">Reflexiones</span></button><button class="flex flex-col items-center gap-1 group text-on-surface-variant/60 hover:text-primary transition-all"><span class="material-symbols-outlined">person</span><span class="font-label text-[10px] uppercase tracking-widest">Perfil</span></button></nav>
+<script>
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            if (panel.classList.contains('opacity-0')) {
+                panel.classList.remove('opacity-0', 'pointer-events-none');
+                panel.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                panel.classList.add('opacity-0', 'pointer-events-none');
+                panel.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+        }
+
+        function setTheme(mode) {
+            const body = document.body;
+            const canvas = document.getElementById('reading-canvas');
+            
+            // Remove all classes first
+            document.documentElement.classList.remove('dark');
+            body.classList.remove('sepia-mode', 'dark-mode');
+            
+            if (mode === 'dark') {
+                document.documentElement.classList.add('dark');
+                body.classList.add('dark-mode');
+            } else if (mode === 'sepia') {
+                body.classList.add('sepia-mode');
+            }
+            // 'light' is default
+        }
+
+        function updateFontSize(val) {
+            const bibleText = document.getElementById('bible-text');
+            bibleText.style.fontSize = val + 'px';
+            bibleText.style.lineHeight = '1.8';
+        }
+
+        // Close settings when clicking outside the panel
+        window.addEventListener('click', function(e) {
+            const panel = document.getElementById('settings-panel');
+            const settingsBtn = document.querySelector('[data-icon="settings"]');
+            if (!panel.contains(e.target) && !settingsBtn.parentElement.contains(e.target) && panel.classList.contains('opacity-100')) {
+                toggleSettings();
+            }
+        });
+    </script>
+
+
+</body></html>

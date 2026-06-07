@@ -1,0 +1,214 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Espacio de Reflexiones — Iglesia Hosanna Sur</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#2259bf",
+                    "on-primary-container": "#e7ebff",
+                    "surface-container": "#efedee",
+                    "secondary-fixed-dim": "#c2c7cc",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "background": "#faf9fa",
+                    "secondary-fixed": "#dfe3e8",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e3e2e3",
+                    "primary-fixed": "#d9e2ff",
+                    "primary": "#094cb2",
+                    "on-error": "#ffffff",
+                    "surface": "#faf9fa",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#f9e37a",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#171c20",
+                    "surface-variant": "#e3e2e3",
+                    "primary-fixed-dim": "#b1c5ff",
+                    "on-primary-fixed-variant": "#00419d",
+                    "inverse-primary": "#b1c5ff",
+                    "surface-dim": "#dbdadb",
+                    "on-primary-fixed": "#001946",
+                    "surface-container-high": "#e9e8e9",
+                    "tertiary": "#6d5e00",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#4a3f00",
+                    "secondary-container": "#dfe3e8",
+                    "surface-container-low": "#f5f3f4",
+                    "outline": "#737784",
+                    "on-surface-variant": "#434653",
+                    "secondary": "#5a5f63",
+                    "on-background": "#1b1c1d",
+                    "on-tertiary-fixed-variant": "#524600",
+                    "on-secondary-fixed-variant": "#42474b",
+                    "inverse-on-surface": "#f2f0f1",
+                    "outline-variant": "#c3c6d5",
+                    "surface-bright": "#faf9fa",
+                    "primary-container": "#3366cc",
+                    "on-tertiary-fixed": "#211b00",
+                    "tertiary-container": "#bfab49",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#dcc661",
+                    "on-surface": "#1b1c1d",
+                    "on-secondary-container": "#606569"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Noto Serif"],
+                    "display": ["Noto Serif"],
+                    "body": ["Inter"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .serif-italic { font-style: italic; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .reflection-editor:focus { outline: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed/50">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface-container-low z-40 flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer active:opacity-80 transition-colors">menu</span>
+<h1 class="font-headline italic font-semibold text-primary text-2xl tracking-tight">Alexandria</h1>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Scholar Profile</span>
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="A professional and artistic headshot of a scholar, portrayed in soft studio lighting with a clean, light-mode background. The individual wears minimal, modern attire that complements the Alexandria brand's sophisticated and academic aesthetic. The overall mood is intelligent, serene, and curated, aligning with the high-end editorial feel of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVhl_CdHCajOdG-IemLO0lt1gK54-7Ah8f-rpZwuGIpNApjxHBcRnHzdf1EVjNFUrH0wg4D24xNse2UYv-h7rOW9tYTnPXwhhDFqssSlUYwIW_l3lY94XQvbxVOB9SwzmRIQNnbv0EbbpHo9HLUQHnLjRgl89eus1WRdFE2FL4S1sC0lLmF02WVT3mFYxLz2SUAVa09uoz5p1bjWPkr0j7ZRY6c8flTYUzolBI9hsrszdCDQt1j_O5EMK4eROoeIYWBBA8SgIBmHkB">
+</div>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-6 pt-8 pb-32 min-h-screen">
+<!-- Header Section -->
+<header class="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+<h2 class="font-headline text-4xl font-bold tracking-tight text-on-surface mb-1">Mi Reflexión</h2>
+<p class="font-label text-sm uppercase tracking-[0.2em] text-tertiary font-semibold">Jueves, 24 de Octubre</p>
+</header>
+<!-- Inspiration Card (Verse) -->
+<section class="mb-12">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-2xl shadow-on-surface/5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<p class="font-headline text-xl leading-relaxed text-on-surface-variant serif-italic mb-6 relative z-10">
+                    "Lámpara es a mis pies tu palabra, y lumbrera a mi camino."
+                </p>
+<div class="flex items-center justify-between relative z-10">
+<span class="font-label text-xs uppercase tracking-widest text-tertiary font-bold">Salmos 119:105</span>
+<button class="flex items-center gap-2 text-primary hover:underline transition-all text-sm font-medium">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                        Cambiar Versículo
+                    </button>
+</div>
+</div>
+</section>
+<!-- Reflection Editor -->
+<section class="mb-12">
+<div class="relative">
+<textarea class="reflection-editor w-full bg-transparent border-none p-0 font-headline text-xl leading-loose text-on-surface placeholder:text-outline-variant/60 focus:ring-0 resize-none min-h-[400px]" placeholder="Comienza a escribir tu reflexión aquí..." spellcheck="false"></textarea>
+<!-- Decorative archival line -->
+<div class="absolute -left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/20 via-primary/5 to-transparent"></div>
+</div>
+</section>
+<!-- Tags / Categories -->
+<section class="mb-16">
+<h3 class="font-label text-xs uppercase tracking-widest text-on-surface-variant mb-4 font-bold">Etiquetar Meditación</h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-label transition-all hover:bg-tertiary/10 hover:text-tertiary active:scale-95">Gratitud</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-label transition-all hover:bg-tertiary/10 hover:text-tertiary active:scale-95">Sabiduría</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-label transition-all hover:bg-tertiary/10 hover:text-tertiary active:scale-95">Prueba</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-label transition-all hover:bg-tertiary/10 hover:text-tertiary active:scale-95">Esperanza</button>
+<button class="w-10 h-10 rounded-full border border-dashed border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</section>
+<!-- Primary Action -->
+<div class="flex justify-center pt-4">
+<button class="group relative px-10 py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full font-label font-bold uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all active:scale-95 overflow-hidden">
+<span class="relative z-10">Finalizar Meditación</span>
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-3 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] rounded-t-xl"><a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1">menu_book</span>
+<span class="font-label text-xs uppercase tracking-widest">Libros</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1">edit_note</span>
+<span class="font-label text-xs uppercase tracking-widest">Bosquejos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-fixed/30 rounded-full px-4 py-1 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+<span class="font-label text-xs uppercase tracking-widest font-bold">Reflexiones</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label text-xs uppercase tracking-widest">Perfil</span>
+</a></nav>
+<!-- Visual Polish: Ambient background texture -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20">
+<div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#d9e2ff_1px,transparent_1px)] [background-size:40px_40px]"></div>
+</div>
+<script>
+        // Micro-interaction for tag selection
+        document.querySelectorAll('button.font-label').forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.classList.toggle('bg-surface-container-high');
+                this.classList.toggle('text-on-surface-variant');
+                this.classList.toggle('bg-tertiary');
+                this.classList.toggle('text-on-tertiary');
+            });
+        });
+
+        // Simple typing effect for placeholder if empty (UX flourish)
+        const editor = document.querySelector('.reflection-editor');
+        editor.addEventListener('focus', () => {
+            editor.parentElement.querySelector('div').classList.add('bg-primary/40');
+        });
+        editor.addEventListener('blur', () => {
+            editor.parentElement.querySelector('div').classList.remove('bg-primary/40');
+        });
+
+        // Auto-expand textarea (minimal version)
+        editor.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    </script>
+
+
+</body></html>
